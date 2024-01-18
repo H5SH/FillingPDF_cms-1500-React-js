@@ -9,6 +9,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url,
 ).toString();
 
+const pdfform = require('./pdfform.js-master/pdfform')
 
 
 function App() {
@@ -26,19 +27,25 @@ function App() {
     // console.log(PdfBytes)
 
     try{
-    
+    // const out_buf = pdfform.transform(PdfBytes, {
+    //   'CITY': "Lahore",
+    //   'STATE': "Pakistan"
+    // })
     const pdfDoc = await PDFDocument.load(PdfBytes)
    
     const form = pdfDoc.getForm()
     form.updateFieldAppearances()
+    form.getFields().find(x=>console.log(x.getName()))
+    const pt_cityField = form.getTextField("pt_city")
+    pt_cityField.setText("Lahore")
     // const nameField = form.getTextField("CITY")
-    const checkbox = form.getCheckBox("Self")
+    // const checkbox = form.getCheckBox("Self")
 
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica) 
+    // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica) 
 
-    const pages = pdfDoc.getPages()
-    const firstPage = pages[0]
-    const {width, height} = firstPage.getSize()
+    // const pages = pdfDoc.getPages()
+    // const firstPage = pages[0]
+    // const {width, height} = firstPage.getSize()
 
     // firstPage.drawText("Hasham Asad",{
     //   x: 40,
@@ -55,7 +62,7 @@ function App() {
     //   size: 10,
     // })
 
-    const count = 0
+    // const count = 0
     const pdfBytes = await pdfDoc.save()
     const file = new Blob([pdfBytes], {type:'applocation/pdf'})
     setPdf(URL.createObjectURL(file))
