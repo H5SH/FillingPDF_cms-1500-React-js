@@ -44,25 +44,25 @@ function App() {
     
 
     // fields which are checkboxes can be indentified when getTextField throws an error
-    const checkboxes = [
-      '276',
-      'sex',
-      'rel_to_ins' ,
-      'ins_sex' ,
-      'lab' ,
-      'assignment' ,
-      'pt_auto_accident' ,
-      'other_accident' ,
-      'ssn' ,
-      'insurance_type' ,
-      'ins_benefit_plan' ,
-      'employment'
-    ]
+    // const checkboxes = [
+    //   '276',
+    //   'sex',
+    //   'rel_to_ins' ,
+    //   'ins_sex' ,
+    //   'lab' ,
+    //   'assignment' ,
+    //   'pt_auto_accident' ,
+    //   'other_accident' ,
+    //   'ssn' ,
+    //   'insurance_type' ,
+    //   'ins_benefit_plan' ,
+    //   'employment'
+    // ]
 
     const buttons = ["Clear Form"]
 
-    setPdf(await fillFieldWithThereName(PdfBytes, checkboxes, buttons, 'somethingToFindAndPrintONColsole'))
-    setPdf(await fillFormUsingVariables(PdfBytes))
+    setPdf(await fillFieldWithThereName(PdfBytes, buttons, 'somethingToFindAndPrintONColsole'))
+    // setPdf(await fillFormUsingVariables(PdfBytes))
 
 
     // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica) 

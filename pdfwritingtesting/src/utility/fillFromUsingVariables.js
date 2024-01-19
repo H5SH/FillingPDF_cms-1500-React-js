@@ -21,6 +21,8 @@ export async function fillFormUsingVariables(fileBytes){
 
     // 1. TopOptions
     const CheckBoxtopOptions_1 = form.getCheckBox('insurance_type')
+    CheckBoxtopOptions_1.check()
+
     
     // 2.PATIENT'S NAME 
     const patientName_2 = form.getTextField('pt_name')
@@ -422,6 +424,8 @@ export async function fillFormUsingVariables(fileBytes){
     
     // Button
     const clearForm = form.getButton('Clear Form')
+
+    
 
     
     // insuranceName.setText('insurance_name')

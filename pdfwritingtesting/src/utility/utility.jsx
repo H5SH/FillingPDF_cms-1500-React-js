@@ -1,10 +1,12 @@
 import { PDFDocument } from "pdf-lib"
 
 // Loop to fill the form with the names of its on fields 
-export async function fillFieldWithThereName(fileBytes, checkboxes, buttons, findAndPrintOnConsole){
+export async function fillFieldWithThereName(fileBytes, buttons, findAndPrintOnConsole){
   const pdfDoc = await PDFDocument.load(fileBytes)
     const form = pdfDoc.getForm()
     form.updateFieldAppearances()
+    // console.log(form.getField('insurance_type').check())
+    // console.log(form.getField('sex'))
 
     form.getFields().find(x=>{
         // to fields with specific names
@@ -13,7 +15,7 @@ export async function fillFieldWithThereName(fileBytes, checkboxes, buttons, fin
         }
        
           try{
-            if(checkboxes.includes(x.getName())){
+            if(typeof form.getField(x.getName()).check === 'function'){
               form.getCheckBox(x.getName()).check()
             }else if(buttons.includes(x.getName())){
               form.getButton(x.getName())

@@ -13,33 +13,14 @@ And with those names you can start filling your fields
 or you fill the form fields with there own names to make indentification easier.
 
 ~~~
- // fields which are checkboxes can be indentified when getTextField throws an error
-    const checkboxes = [
-      '276',
-      'sex',
-      'rel_to_ins' ,
-      'ins_sex' ,
-      'ins_benefir_plan' ,
-      'lab' ,
-      'assignment' ,
-      'employement' , 
-      'pt_auto_accident' ,
-      'other_accident' ,
-      'ssn' ,
-      'insurance_type' ,
-      'ins_benefit_plan' ,
-      'employment'
-    ]
-
-    // Loop to fill the form with the names of its on fields 
-    form.getFields().find(x=>{  
-                // to fields with specific names
+ form.getFields().find(x=>{
+        // to fields with specific names
         if(x.getName().includes(findAndPrintOnConsole)){
           console.log(x.getName())
         }
        
           try{
-            if(checkboxes.includes(x.getName())){
+            if(typeof form.getField(x.getName()).check === 'function'){
               form.getCheckBox(x.getName()).check()
             }else if(buttons.includes(x.getName())){
               form.getButton(x.getName())
@@ -57,7 +38,8 @@ or you fill the form fields with there own names to make indentification easier.
             console.log("LOOP ERROR")
             console.log(err)
           }
-    })
+      
+      })
 ~~~
 
 ## pdfform.js
