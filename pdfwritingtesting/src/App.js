@@ -6,6 +6,8 @@ import { saveAs } from 'file-saver'
 import { StyleSheet } from '@react-pdf/renderer'
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
+import { fillFieldWithThereName } from './utility/utility';
+import { fillFormUsingVariables } from './utility/fillFromUsingVariables';
 
 
 // To display the pdf on Browser
@@ -39,10 +41,7 @@ function App() {
     //   'CITY': "Lahore",
     //   'STATE': "Pakistan"
     // })
-    const pdfDoc = await PDFDocument.load(PdfBytes)
-   
-    const form = pdfDoc.getForm()
-    form.updateFieldAppearances()
+    
 
     // fields which are checkboxes can be indentified when getTextField throws an error
     const checkboxes = [
@@ -50,10 +49,8 @@ function App() {
       'sex',
       'rel_to_ins' ,
       'ins_sex' ,
-      'ins_benefir_plan' ,
       'lab' ,
       'assignment' ,
-      'employement' , 
       'pt_auto_accident' ,
       'other_accident' ,
       'ssn' ,
@@ -62,122 +59,11 @@ function App() {
       'employment'
     ]
 
-    // Loop to fill the form with the names of its on fields 
-    form.getFields().find(x=>{
-     
-        try{
-          if(checkboxes.includes(x.getName())){
-            form.getCheckBox(x.getName()).check()
-          }else if(x.getName() === "Clear Form"){
-            form.getButton(x.getName())
-          }else{
-            const length = form.getTextField(x.getName()).getMaxLength()
-            // fields with max length limit get filled with sliced name
-            if(length === undefined || length > 4){
-              form.getTextField(x.getName()).setText(x.getName())
-            }else{
-              form.getTextField(x.getName()).setText(x.getName().slice(0, length))
-            }
-          }
+    const buttons = ["Clear Form"]
 
-        }catch(err){
-          console.log("LOOP ERROR")
-          console.log(err)
-        }
-    
-    })
+    setPdf(await fillFieldWithThereName(PdfBytes, checkboxes, buttons, 'somethingToFindAndPrintONColsole'))
+    setPdf(await fillFormUsingVariables(PdfBytes))
 
-    // VARIABLES TO FILL DATA
-
-    // 2.PATIENT'S NAME 
-    // const patientName_2 = form.getTextField('pt_name')
-    // patientName_2.setText('pt_name')
-
-    // // 5. PATIENT'S ADDRESS
-    // const patientAddress_5 = form.getTextField('pt_street')
-    // patientAddress_5.setText('pt_street')
-
-    // // CITY
-    // const city = form.getTextField("pt_city")
-    // city.setText("pt_city")
-
-    // // ZIP CODE
-    // const zipCode = form.getTextField('pt_zip')
-    // zipCode.setText('zipCode')
-
-    // // 9. OTHER INSURED'S NAME
-    // const otherInsuredName = form.getTextField()
-
-    // // Main Title of the Insurance no visible field
-    // const mainTitle = form.getTextField('insurance_name')
-    // mainTitle.setText('insurance_name')
-
-    // // 8. RESERVED FOR NUCC USE 
-    // const reserverdForNuccUse_8 = form.getTextField('NUCC USE')
-    // reserverdForNuccUse_8.setText('NUCC USE')
-
-    // // b. RESERVED FOR NUCC USE
-    // const reserverdForNuccUse_b = form.getTextField('40')
-    // reserverdForNuccUse_b.setText('40')
-
-    // // c. RESERVED FOR NUCC USE
-    // const reserverdForNuccUse_c = form.getTextField('41')
-    // reserverdForNuccUse_c.setText('41')
-
-    // // 10d. CLAIM CODES (Designated by NUCC)
-    // const claimCodes_10d = form.getTextField('50')
-    // claimCodes_10d.setText('50')
-
-    // // fields under b. OTHER CLAIM ID (Designated by NUCC)
-    // // left field 
-    // const otherClaimId_b_left = form.getTextField('57')
-    // otherClaimId_b_left.setText('57')
-    // // right field  
-    // const otherClaimId_b_right = form.getTextField('58')
-    // otherClaimId_b_right.setText('58')
-
-    // // fields under 14. DATE OF CURRENT ILLNESS, INJURY, or PReGNANCY (LMP)
-    // // right most
-    // const dateOfCurrentIllness_14 = form.getTextField('73')
-    // dateOfCurrentIllness_14.setText('73')
-
-    // // fields under 15. OTHER DATE
-    // // QUAL
-    // const otherDate_15_qual = form.getTextField('74')
-    // otherDate_15_qual.setText('74')
-    
-    // // fields under 17.NAME OF REFERRING PROVIDER OR OTHER SOURCE
-    // // left field
-    // const nameOfReferringProvider_17_left = form.getTextField('85')
-    // nameOfReferringProvider_17_left.setText('85')  
-
-    // // 19. ADDITIONAL CLAIM INFORMATION (Designated by NUCC)
-    // const additionalClaimInformation_19 = form.getTextField('96')
-    // additionalClaimInformation_19.setText("96")
-
-    // // fields under 21. DIAGNOSIS OR NATURE OF ILLNESS OR INJURY Relate A-L to service line below ()
-    // // ICD_Ind
-    // const icd_ind =  form.getTextField('99icd')
-    // icd_ind.setText('99icd')
-
-    // form.getTextField('135').setText('135')
-    // form.getTextField('157').setText('157')
-    // form.getTextField('179').setText('179')
-    // form.getTextField('201').setText('201')
-    // form.getTextField('223').setText('223')
-    // form.getTextField('245').setText('245')
-
-    // // 28.TOTAL CHARGE
-    // const totalCharge_28 = form.getCheckBox('276')
-    // totalCharge_28.check()
-
-    // // Button
-    // form.getButton('Clear Form')
-
-    // // fields under 16. DATES PATIENT UNABLE TO WORK IN CURRENT OCCUPATION
-    // form.getTextField('work_yy_from').setText('22')
-    
-    
 
     // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica) 
 
@@ -201,9 +87,8 @@ function App() {
     // })
 
     // const count = 0
-    const pdfBytes = await pdfDoc.save()
-    const file = new Blob([pdfBytes], {type:'applocation/pdf'})
-    setPdf(URL.createObjectURL(file))
+    
+    
     // to save the file
     //saveAs(pdf, `Filled-cms-1500.pdf`)
     // ReactPDF.render(file, `form-cms${count++}.pdf`)

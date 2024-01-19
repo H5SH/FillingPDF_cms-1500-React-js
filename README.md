@@ -33,24 +33,30 @@ or you fill the form fields with there own names to make indentification easier.
 
     // Loop to fill the form with the names of its on fields 
     form.getFields().find(x=>{  
-        try{
-          if(checkboxes.includes(x.getName())){
-            form.getCheckBox(x.getName()).check()
-          }else if(x.getName() === "Clear Form"){
-            form.getButton(x.getName())
-          }else{
-            const length = form.getTextField(x.getName()).getMaxLength()
-            // fields with max length limit get filled with sliced name
-            if(length === undefined || length > 4){
-              form.getTextField(x.getName()).setText(x.getName())
-            }else{
-              form.getTextField(x.getName()).setText(x.getName().slice(0, length))
-            }
-          }
-        }catch(err){
-          console.log("LOOP ERROR")
-          console.log(err)
+                // to fields with specific names
+        if(x.getName().includes(findAndPrintOnConsole)){
+          console.log(x.getName())
         }
+       
+          try{
+            if(checkboxes.includes(x.getName())){
+              form.getCheckBox(x.getName()).check()
+            }else if(buttons.includes(x.getName())){
+              form.getButton(x.getName())
+            }else{
+              const length = form.getTextField(x.getName()).getMaxLength()
+              // fields with max length limit get filled with sliced name
+              if(length === undefined || length > 4){
+                form.getTextField(x.getName()).setText(x.getName())
+              }else{
+                form.getTextField(x.getName()).setText(x.getName().slice(0, length))
+              }
+            }
+  
+          }catch(err){
+            console.log("LOOP ERROR")
+            console.log(err)
+          }
     })
 ~~~
 
