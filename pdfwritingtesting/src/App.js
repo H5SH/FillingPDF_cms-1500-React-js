@@ -62,10 +62,9 @@ function App() {
       'employment'
     ]
 
-    // to fill the form with the names of its on fields 
+    // Loop to fill the form with the names of its on fields 
     form.getFields().find(x=>{
-      const field = form.getFieldMaybe(x.getName())
-      if(field){
+     
         try{
           if(checkboxes.includes(x.getName())){
             form.getCheckBox(x.getName()).check()
@@ -73,6 +72,7 @@ function App() {
             form.getButton(x.getName())
           }else{
             const length = form.getTextField(x.getName()).getMaxLength()
+            // fields with max length limit get filled with sliced name
             if(length === undefined || length > 4){
               form.getTextField(x.getName()).setText(x.getName())
             }else{
@@ -84,8 +84,29 @@ function App() {
           console.log("LOOP ERROR")
           console.log(err)
         }
-      }
+    
     })
+
+    // VARIABLES TO FILL DATA
+
+    // 2.PATIENT'S NAME 
+    // const patientName_2 = form.getTextField('pt_name')
+    // patientName_2.setText('pt_name')
+
+    // // 5. PATIENT'S ADDRESS
+    // const patientAddress_5 = form.getTextField('pt_street')
+    // patientAddress_5.setText('pt_street')
+
+    // // CITY
+    // const city = form.getTextField("pt_city")
+    // city.setText("pt_city")
+
+    // // ZIP CODE
+    // const zipCode = form.getTextField('pt_zip')
+    // zipCode.setText('zipCode')
+
+    // // 9. OTHER INSURED'S NAME
+    // const otherInsuredName = form.getTextField()
 
     // // Main Title of the Insurance no visible field
     // const mainTitle = form.getTextField('insurance_name')
@@ -152,13 +173,6 @@ function App() {
 
     // // Button
     // form.getButton('Clear Form')
-
-
-    
-
-    // // CITY
-    // const city = form.getTextField("pt_city")
-    // city.setText("Lahore")
 
     // // fields under 16. DATES PATIENT UNABLE TO WORK IN CURRENT OCCUPATION
     // form.getTextField('work_yy_from').setText('22')

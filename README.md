@@ -13,7 +13,7 @@ And with those names you can start filling your fields
 or you fill the form fields with there own names to make indentification easier.
 
 ~~~
-// fields which are checkboxes can be indentified when getTextField throws an error
+ // fields which are checkboxes can be indentified when getTextField throws an error
     const checkboxes = [
       '276',
       'sex',
@@ -31,32 +31,26 @@ or you fill the form fields with there own names to make indentification easier.
       'employment'
     ]
 
-    // to fill the form with the names of its on fields 
-    form.getFields().find(x=>{
-      const field = form.getFieldMaybe(x.getName())
-      if(field){
+    // Loop to fill the form with the names of its on fields 
+    form.getFields().find(x=>{  
         try{
           if(checkboxes.includes(x.getName())){
             form.getCheckBox(x.getName()).check()
           }else if(x.getName() === "Clear Form"){
             form.getButton(x.getName())
-          }
-          // filling fields with there names
-          else{
+          }else{
             const length = form.getTextField(x.getName()).getMaxLength()
-            // fields with maxlength limit get filled with slice of the string
+            // fields with max length limit get filled with sliced name
             if(length === undefined || length > 4){
               form.getTextField(x.getName()).setText(x.getName())
             }else{
               form.getTextField(x.getName()).setText(x.getName().slice(0, length))
             }
           }
-
         }catch(err){
           console.log("LOOP ERROR")
           console.log(err)
         }
-      }
     })
 ~~~
 
