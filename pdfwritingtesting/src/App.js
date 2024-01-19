@@ -44,27 +44,29 @@ function App() {
     const form = pdfDoc.getForm()
     form.updateFieldAppearances()
 
-    // to display all the fields name in console
+    // fields which are checkboxes can be indentified when getTextField throws an error
+    const checkboxes = [
+      '276',
+      'sex',
+      'rel_to_ins' ,
+      'ins_sex' ,
+      'ins_benefir_plan' ,
+      'lab' ,
+      'assignment' ,
+      'employement' , 
+      'pt_auto_accident' ,
+      'other_accident' ,
+      'ssn' ,
+      'insurance_type' ,
+      'ins_benefit_plan' ,
+      'employment'
+    ]
+
+    // to fill the form with the names of its on fields 
     form.getFields().find(x=>{
       const field = form.getFieldMaybe(x.getName())
       if(field){
         try{
-          const checkboxes = [
-            '276',
-            'sex',
-            'rel_to_ins' ,
-            'ins_sex' ,
-            'ins_benefir_plan' ,
-            'lab' ,
-            'assignment' ,
-            'employement' , 
-            'pt_auto_accident' ,
-            'other_accident' ,
-            'ssn' ,
-            'insurance_type' ,
-            'ins_benefit_plan' ,
-            'employment'
-          ]
           if(checkboxes.includes(x.getName())){
             form.getCheckBox(x.getName()).check()
           }else if(x.getName() === "Clear Form"){

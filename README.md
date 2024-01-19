@@ -9,7 +9,56 @@ Pdf-lib is nearly perfect libirary but its getFiled
 functions are not picking up any fields from the given pdf
 And that is because of different filed names, you can display
 All the filed names form.getFieds().find/filter/map(x=>console.log(x.name))
-And with those names you can start filling your fields 
+And with those names you can start filling your fields
+or you fill the form fields with there own names to make indentification easier.
+
+~~~
+// fields which are checkboxes can be indentified when getTextField throws an error
+    const checkboxes = [
+      '276',
+      'sex',
+      'rel_to_ins' ,
+      'ins_sex' ,
+      'ins_benefir_plan' ,
+      'lab' ,
+      'assignment' ,
+      'employement' , 
+      'pt_auto_accident' ,
+      'other_accident' ,
+      'ssn' ,
+      'insurance_type' ,
+      'ins_benefit_plan' ,
+      'employment'
+    ]
+
+    // to fill the form with the names of its on fields 
+    form.getFields().find(x=>{
+      const field = form.getFieldMaybe(x.getName())
+      if(field){
+        try{
+          if(checkboxes.includes(x.getName())){
+            form.getCheckBox(x.getName()).check()
+          }else if(x.getName() === "Clear Form"){
+            form.getButton(x.getName())
+          }
+          // filling fields with there names
+          else{
+            const length = form.getTextField(x.getName()).getMaxLength()
+            // fields with maxlength limit get filled with slice of the string
+            if(length === undefined || length > 4){
+              form.getTextField(x.getName()).setText(x.getName())
+            }else{
+              form.getTextField(x.getName()).setText(x.getName().slice(0, length))
+            }
+          }
+
+        }catch(err){
+          console.log("LOOP ERROR")
+          console.log(err)
+        }
+      }
+    })
+~~~
 
 ## pdfform.js
 pdfform is potentional solution which might pick up the fields
