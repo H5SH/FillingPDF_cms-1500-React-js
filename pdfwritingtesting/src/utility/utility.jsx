@@ -1,40 +1,52 @@
-import { PDFDocument } from "pdf-lib"
+import { PDFDocument, createPDFAcroFields } from "pdf-lib"
 
 // Loop to fill the form with the names of its on fields 
 export async function fillFieldWithThereName(fileBytes, buttons, findAndPrintOnConsole){
   const pdfDoc = await PDFDocument.load(fileBytes)
     const form = pdfDoc.getForm()
     form.updateFieldAppearances()
-    // console.log(form.getField('insurance_type').check())
-    // console.log(form.getField('sex'))
+    const kids = createPDFAcroFields(form.getCheckBox('insurance_type').acroField.Kids()).map(_=>_[0])
+    let count = 1
+    kids.forEach((kid, index)=>{
+      if(typeof kid.getPartialName() === 'undefined'){
+        kid.setPartialName(`insurance_type_${count++}`)
+      }
+      console.log(kid.getOnValue())
+      if('/Medicaid' === kid.getOnValue().encodedName){
+        kid.setValue(kid.getOnValue())
+      }
+    })
+    // console.log(form.getOptionList())
+    // console.log(form.getCheckBox('insurance_type').acroField.Kids())
+   
 
-    form.getFields().find(x=>{
-        // to fields with specific names
-        if(x.getName().includes(findAndPrintOnConsole)){
-          console.log(x.getName())
-        }
+    // form.getFields().find(x=>{
+    //     // to fields with specific names
+    //     if(x.getName().includes(findAndPrintOnConsole)){
+    //       console.log(x.getName())
+    //     }
        
-          try{
-            if(typeof form.getField(x.getName()).check === 'function'){
-              form.getCheckBox(x.getName()).check()
-            }else if(buttons.includes(x.getName())){
-              form.getButton(x.getName())
-            }else{
-              const length = form.getTextField(x.getName()).getMaxLength()
-              // fields with max length limit get filled with sliced name
-              if(length === undefined || length > 4){
-                form.getTextField(x.getName()).setText(x.getName())
-              }else{
-                form.getTextField(x.getName()).setText(x.getName().slice(0, length))
-              }
-            }
+    //       try{
+    //         if(typeof form.getField(x.getName()).check === 'function'){
+    //           form.getCheckBox(x.getName()).check()
+    //         }else if(buttons.includes(x.getName())){
+    //           form.getButton(x.getName())
+    //         }else{
+    //           const length = form.getTextField(x.getName()).getMaxLength()
+    //           // fields with max length limit get filled with sliced name
+    //           if(length === undefined || length > 4){
+    //             form.getTextField(x.getName()).setText(x.getName())
+    //           }else{
+    //             form.getTextField(x.getName()).setText(x.getName().slice(0, length))
+    //           }
+    //         }
   
-          }catch(err){
-            console.log("LOOP ERROR")
-            console.log(err)
-          }
+    //       }catch(err){
+    //         console.log("LOOP ERROR")
+    //         console.log(err)
+    //       }
       
-      })
+    //   })
 
       return await urlforPDF(pdfDoc)
 }
