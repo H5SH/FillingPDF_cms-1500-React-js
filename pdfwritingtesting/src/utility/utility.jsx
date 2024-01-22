@@ -1,14 +1,14 @@
 import { PDFDocument, PDFName, createPDFAcroFields } from "pdf-lib"
 
 // Loop to fill the form with the names of its on fields 
-export async function fillFieldWithThereName(fileBytes, buttons, f){
+export async function fillFieldWithThereName(fileBytes, buttons, findAndPrintOnConsole){
   const pdfDoc = await PDFDocument.load(fileBytes)
     const form = pdfDoc.getForm()
     form.updateFieldAppearances()
 
     // check child of a checkbox
     // const kids = createPDFAcroFields(form.getCheckBox('rel_to_ins').acroField.Kids()).map(_=>_[0])
-    // checkChildBox(form, kids, 4)
+    // checkChildBox(kids, 4)
 
     form.getFields().find(x=>{
         // to fields with specific names
@@ -48,21 +48,21 @@ export async function urlforPDF(pdfDoc){
     return URL.createObjectURL(file) 
 }
 
-async function checkChildBox(form, arrayOfCheckBoxes ,boxNumber){
+async function checkChildBox(arrayOfCheckBoxes ,boxNumber){
   if(arrayOfCheckBoxes.length < boxNumber){
     throw "ARRAY IS SMALLER THEN THE BOXNUMBER"
   }else{
 
     arrayOfCheckBoxes.forEach((kid, index)=>{
       if(typeof kid.getPartialName() === 'undefined'){
-        kid.setPartialName(`insurance_type_${index}`)
+        kid.setPartialName(`insurance_type_${index + 1}`)
       }
       // console.log(kid.getOnValue())
       // if('/Medicaid' === kid.getOnValue().encodedName){
       //   kid.setValue(kid.getOnValue())
       // }
       console.log(kid.getPartialName())
-      if(kid.getPartialName() === `insurance_type_${boxNumber + 1}`){
+      if(kid.getPartialName() === `insurance_type_${boxNumber}`){
          kid.setValue(kid.getOnValue())
       }
     })
