@@ -107,13 +107,16 @@ function App() {
   return (
     <div>
     {response ? <p>{response}</p>:
-    <>
-      <Document file={pdf} style={styles.section}>
+    <div style={{textAlign: 'center', marginTop: "1%"}}>
+    <object data={pdf}
+     type="application/pdf"
+     style={{width: '50%', height: '750px'}}></object>
+      {/* <Document file={pdf} style={styles.section}>
       <a href={pdf} download={'Filled-cms-1500.pdf'} target='C:/H5SH/Work/FillingPDF_cms-1500-React-js'>DownLoad</a>
         <Page size={'A4'} pageNumber={1} style={styles.page}/>
-      </Document>
+      </Document> */}
       
-      </>
+      </div>
 }
       
        {/* <PDFViewer>

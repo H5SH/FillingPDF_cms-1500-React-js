@@ -1,6 +1,12 @@
 import { PDFDocument, createPDFAcroFields } from "pdf-lib"
 import { urlforPDF } from "./utility"
-import { checkInsuranceType } from "./checkChildBoxes"
+import { 
+    checkInsuranceType, 
+    checkPatientRelationshipToInsured, 
+    checkGender,
+    checkYesOrNo,
+    checkSSNOrEIN
+ } from "./checkChildBoxes"
 
 export async function fillFormUsingVariables(fileBytes){
 
@@ -30,7 +36,7 @@ export async function fillFormUsingVariables(fileBytes){
     const patientBDyy_3 = form.getTextField('birth_yy')
     const patientBDmm_3 = form.getTextField('birth_mm')
     const patientBDdd_3 = form.getTextField('birth_dd')
-    const patientBDSex_3 = form.getCheckBox('sex')
+    checkGender(createPDFAcroFields(form.getCheckBox('sex').acroField.Kids()).map(_=>_[0]), '')
 
     // 4. INSURED'S NAME
     const insuredName_4 = form.getTextField('ins_name')
@@ -69,6 +75,8 @@ export async function fillFormUsingVariables(fileBytes){
     
     // 1 a. INSURED'S I.D NUMBER
     const insuredIdNUmber_1a = form.getTextField('insurance_id')
+    // 6. PATIENT RELATIONSHIP TO INSURED
+    checkPatientRelationshipToInsured(createPDFAcroFields(form.getCheckBox('rel_to_ins').acroField.Kids()).map(_=>_[0]), '')
     // 7. INSURED'S ADDRESS
     const insuredAddress = form.getTextField('ins_street') 
     // CITY under Insured tags
@@ -80,22 +88,22 @@ export async function fillFormUsingVariables(fileBytes){
     // TELEPHONE (Include Area Code)
     const insuredTelephoneCountryCode = form.getTextField('ins_phone area')
     const insuredTelephoneNumber = form.getTextField('ins_phone')
-
+    
     // 10. IS PATIENT'S CONDITION RELATED TO
     // a. EMPLOYEMENT?
-    const checkBoxEmployment_a = form.getCheckBox('employment')
+    checkYesOrNo(createPDFAcroFields(form.getCheckBox('employment').acroField.Kids()).map(_=>_[0]), '')
     // b. AUTO ACCIDENT?
-    const checkBoxAutoAccident_b = form.getCheckBox('pt_auto_accident')
+    checkYesOrNo(createPDFAcroFields(form.getCheckBox('pt_auto_accident').acroField.Kids()).map(_=>_[0]), '')
     // c. OTHER ACCIDENT?
-    const checkBoxOtherAccident_c = form.getCheckBox('other_accident')
-
+    checkYesOrNo(createPDFAcroFields(form.getCheckBox('other_accident').acroField.Kids()).map(_=>_[0]), '')
+    
     // 11.INSURED'S POLICY GROUP OR FECA NUMBER
     const insuredPolicy_11 = form.getTextField('ins_policy')
     // a. INSURED'S DATE OF BIRTH
     const insuredBDmm = form.getTextField('ins_dob_mm')
     const insuredBDdd = form.getTextField('ins_dob_dd')
     const insuredBDyy = form.getTextField('ins_dob_yy')
-    const isuredBDSex_a = form.getCheckBox('ins_sex').check()
+    checkGender(createPDFAcroFields(form.getCheckBox('ins_sex').acroField.Kids()).map(_=>_[0]), '')
     
     // b. OTHER CLAIM ID (Designated by NUCC)
     // left field 
@@ -105,6 +113,8 @@ export async function fillFormUsingVariables(fileBytes){
     
     // c. INSURANCE PLAN NAME OR PROGRAM NAME
     const insurancePlanName_c = form.getTextField('ins_plan_name')
+    // d.IS THERE ANOTHER HEALTH BENEFIT PLAN?
+    checkYesOrNo(createPDFAcroFields(form.getCheckBox('ins_benefit_plan').acroField.Kids()).map(_=>_[0]), '')
     
     // 8. RESERVED FOR NUCC USE 
     const reserverdForNuccUse_8 = form.getTextField('NUCC USE')
@@ -165,11 +175,9 @@ export async function fillFormUsingVariables(fileBytes){
     // 19. ADDITIONAL CLAIM INFORMATION (Designated by NUCC)
     const additionalClaimInformation_19 = form.getTextField('96')
 
-    // 6. PATIENT RELATIONSHIP TO INSURED
-    const patientRelationShipToInsured_6 = form.getCheckBox('rel_to_ins')
 
     // 20.OUTSIDELAB?
-    const checkBoxOutSideLab_20 = form.getCheckBox('lab')
+    checkYesOrNo(createPDFAcroFields(form.getCheckBox('lab').acroField.Kids()).map(_=>_[0]), '')
     // $ CHARGES
     const charges_$20 = form.getTextField('charge')
 
@@ -379,13 +387,13 @@ export async function fillFormUsingVariables(fileBytes){
     
     // 25. FEDERAL TAX I.D NUMBER
     const federalTax_25 = form.getTextField('tax_id')
-    const checkBoxFederalTaxSsn_25 = form.getCheckBox('ssn')
+    checkSSNOrEIN(createPDFAcroFields(form.getCheckBox('ssn').acroField.Kids()).map(_=>_[0]), '')
 
     // 26. PATIENT'S ACCOUNT NO
     const patientAccountNo = form.getTextField('pt_account')
     
     // 27. ACCEPT ASSIGNMENT
-    const checkBoxAcceptAssignment_27 = form.getCheckBox('assignment')
+    checkYesOrNo(createPDFAcroFields(form.getCheckBox('assignment').acroField.Kids()).map(_=>_[0]),'')
     
     // 28.TOTAL CHARGE
     const checkBoxtotalCharge_28 = form.getCheckBox('276')
@@ -418,8 +426,6 @@ export async function fillFormUsingVariables(fileBytes){
     // b
     const billingProviderInfo_b = form.getTextField('grp')
 
-    // d.IS THERE ANOTHER HEALTH BENEFIT PLAN?
-    const checkBoxAnotherHealthBenefits = form.getCheckBox('ins_benefit_plan')
     
     // Button
     const clearForm = form.getButton('Clear Form')

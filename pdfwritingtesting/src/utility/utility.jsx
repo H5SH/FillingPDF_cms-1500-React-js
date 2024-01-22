@@ -37,7 +37,7 @@ export async function fillFieldWithThereName(fileBytes, buttons, findAndPrintOnC
           }
       
       })
-      
+
       form.flatten()
       return await urlforPDF(pdfDoc)
 }
@@ -45,7 +45,7 @@ export async function fillFieldWithThereName(fileBytes, buttons, findAndPrintOnC
 
 export async function urlforPDF(pdfDoc){
   const pdfBytes = await pdfDoc.save()
-    const file = new Blob([pdfBytes], {type:'applocation/pdf'})
+    const file = new Blob([pdfBytes], {type:'application/pdf'})
     return URL.createObjectURL(file) 
 }
 
@@ -70,3 +70,5 @@ async function checkChildBox(arrayOfCheckBoxes ,boxNumber){
   }
   
 }
+
+
