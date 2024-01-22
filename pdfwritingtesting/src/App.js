@@ -61,7 +61,7 @@ function App() {
 
     const buttons = ["Clear Form"]
 
-    setPdf(await fillFieldWithThereName(PdfBytes, buttons, 'somethingToFindAndPrintONColsole'))
+    setPdf(await fillFieldWithThereName(PdfBytes, buttons, 'champva'))
     // setPdf(await fillFormUsingVariables(PdfBytes))
 
 
