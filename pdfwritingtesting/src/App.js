@@ -61,8 +61,9 @@ function App() {
 
     const buttons = ["Clear Form"]
 
-    setPdf(await fillFieldWithThereName(PdfBytes, buttons, 'champva'))
-    // setPdf(await fillFormUsingVariables(PdfBytes))
+    // TWO FUNCTION CALLS
+    // setPdf(await fillFieldWithThereName(PdfBytes, buttons, 'champva'))
+    setPdf(await fillFormUsingVariables(PdfBytes))
 
 
     // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica) 

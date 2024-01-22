@@ -37,7 +37,8 @@ export async function fillFieldWithThereName(fileBytes, buttons, findAndPrintOnC
           }
       
       })
-
+      
+      form.flatten()
       return await urlforPDF(pdfDoc)
 }
 

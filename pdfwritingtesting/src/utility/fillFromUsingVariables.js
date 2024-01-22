@@ -1,5 +1,6 @@
-import { PDFDocument } from "pdf-lib"
+import { PDFDocument, createPDFAcroFields } from "pdf-lib"
 import { urlforPDF } from "./utility"
+import { checkInsuranceType } from "./checkChildBoxes"
 
 export async function fillFormUsingVariables(fileBytes){
 
@@ -20,9 +21,7 @@ export async function fillFormUsingVariables(fileBytes){
     const insuranceCityStateZip = form.getTextField('insurance_city_state_zip')
 
     // 1. TopOptions
-    const CheckBoxtopOptions_1 = form.getCheckBox('insurance_type')
-    CheckBoxtopOptions_1.check()
-
+    checkInsuranceType(createPDFAcroFields(form.getCheckBox('insurance_type').acroField.Kids()).map(_=>_[0]), '')
     
     // 2.PATIENT'S NAME 
     const patientName_2 = form.getTextField('pt_name')
@@ -461,5 +460,6 @@ export async function fillFormUsingVariables(fileBytes){
     // additionalClaimInformation_19.setText("96")
     // icd_ind.setText('99icd')
 
+    form.flatten()
     return await urlforPDF(pdfDoc)
 }
