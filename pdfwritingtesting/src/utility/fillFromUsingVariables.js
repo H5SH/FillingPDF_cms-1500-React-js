@@ -426,12 +426,8 @@ export async function fillFormUsingVariables(fileBytes){
     // b
     const billingProviderInfo_b = form.getTextField('grp')
 
-    
     // Button
     const clearForm = form.getButton('Clear Form')
-
-    
-
     
     // insuranceName.setText('insurance_name')
     // insuranceAddress.setText('insurance_address')

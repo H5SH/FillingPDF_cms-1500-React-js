@@ -46,6 +46,10 @@ or you fill the form fields with there own names to make indentification easier.
 You can check a child box by giving the function an array of all 
 the fields checkboxes and the box number, first box as 1.
 
+## CheckChildBoxes
+Contains different functions for different checkboxes, such as 
+1 function for yes or no and 1 for gender male and female 
+
 ## pdfform.js
 pdfform is potentional solution which might pick up the fields
 but it is not available on node package instullar or npm 

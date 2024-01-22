@@ -10,7 +10,9 @@ export function checkInsuranceType(boxes, check){
         boxes[4].setPartialName('grouphealthplan')
         boxes[5].setPartialName('fecablklung')
         boxes[6].setPartialName('other')
+
         boxes.filter((box) => {
+            // works even if user have added spaces
             if(box.getPartialName() === check.toLowerCase().replace(/\s/g, '')){
                 box.setValue(box.getOnValue())
             }
@@ -26,6 +28,7 @@ export function checkGender(boxes, check){
         boxes[1].setPartialName("F")
 
         boxes.filter((box)=>{
+            // also works with single character Input m or f 
             if(box.getPartialName() === check[0].toUpperCase()){
                 box.setValue(box.getOnValue())
             }
@@ -54,6 +57,7 @@ export function checkYesOrNo(boxes, check){
         boxes[0].setPartialName('yes')
         boxes[1].setPartialName('no')
         boxes.filter((box)=>{
+            // works with single character inputs like y or n in respected of case
             if(box.getPartialName().includes(check[0].toLowerCase())){
                 box.setValue(box.getOnValue())
             }
