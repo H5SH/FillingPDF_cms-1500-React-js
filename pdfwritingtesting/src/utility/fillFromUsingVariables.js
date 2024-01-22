@@ -1,12 +1,6 @@
 import { PDFDocument, createPDFAcroFields } from "pdf-lib"
 import { urlforPDF } from "./utility"
-import { 
-    checkInsuranceType, 
-    checkPatientRelationshipToInsured, 
-    checkGender,
-    checkYesOrNo,
-    checkSSNOrEIN
- } from "./checkChildBoxes"
+import checkCheckBox from "./checkChildBoxes"
 
 export async function fillFormUsingVariables(fileBytes){
 
@@ -14,6 +8,21 @@ export async function fillFormUsingVariables(fileBytes){
    
     const form = pdfDoc.getForm()
     form.updateFieldAppearances()
+
+    // CheckBoxes FieldNames
+    const checkboxFields = {
+        insurance_type: 'insurance_type',
+        patientsGender: 'sex',
+        patientsRelationshipToInsured: 'rel_to_ins',
+        employement: 'employment',
+        autoAccident: 'pt_auto_accident',
+        otherAccident: 'other_accident',
+        insuredGender: 'ins_sex',
+        anotherHealthBenefit: 'ins_benefit_plan',
+        outsideLab: 'lab',
+        federalTaxIDNumber: 'ssn',
+        acceptAssignment: 'assignment'
+    }
     // VARIABLES TO FILL DATA
 
     // MAIN TITLES (NO TAGS)
@@ -26,8 +35,6 @@ export async function fillFormUsingVariables(fileBytes){
     // Forth field
     const insuranceCityStateZip = form.getTextField('insurance_city_state_zip')
 
-    // 1. TopOptions
-    checkInsuranceType(createPDFAcroFields(form.getCheckBox('insurance_type').acroField.Kids()).map(_=>_[0]), '')
     
     // 2.PATIENT'S NAME 
     const patientName_2 = form.getTextField('pt_name')
@@ -36,8 +43,7 @@ export async function fillFormUsingVariables(fileBytes){
     const patientBDyy_3 = form.getTextField('birth_yy')
     const patientBDmm_3 = form.getTextField('birth_mm')
     const patientBDdd_3 = form.getTextField('birth_dd')
-    checkGender(createPDFAcroFields(form.getCheckBox('sex').acroField.Kids()).map(_=>_[0]), '')
-
+    
     // 4. INSURED'S NAME
     const insuredName_4 = form.getTextField('ins_name')
     
@@ -75,8 +81,6 @@ export async function fillFormUsingVariables(fileBytes){
     
     // 1 a. INSURED'S I.D NUMBER
     const insuredIdNUmber_1a = form.getTextField('insurance_id')
-    // 6. PATIENT RELATIONSHIP TO INSURED
-    checkPatientRelationshipToInsured(createPDFAcroFields(form.getCheckBox('rel_to_ins').acroField.Kids()).map(_=>_[0]), '')
     // 7. INSURED'S ADDRESS
     const insuredAddress = form.getTextField('ins_street') 
     // CITY under Insured tags
@@ -89,13 +93,6 @@ export async function fillFormUsingVariables(fileBytes){
     const insuredTelephoneCountryCode = form.getTextField('ins_phone area')
     const insuredTelephoneNumber = form.getTextField('ins_phone')
     
-    // 10. IS PATIENT'S CONDITION RELATED TO
-    // a. EMPLOYEMENT?
-    checkYesOrNo(createPDFAcroFields(form.getCheckBox('employment').acroField.Kids()).map(_=>_[0]), '')
-    // b. AUTO ACCIDENT?
-    checkYesOrNo(createPDFAcroFields(form.getCheckBox('pt_auto_accident').acroField.Kids()).map(_=>_[0]), '')
-    // c. OTHER ACCIDENT?
-    checkYesOrNo(createPDFAcroFields(form.getCheckBox('other_accident').acroField.Kids()).map(_=>_[0]), '')
     
     // 11.INSURED'S POLICY GROUP OR FECA NUMBER
     const insuredPolicy_11 = form.getTextField('ins_policy')
@@ -103,7 +100,6 @@ export async function fillFormUsingVariables(fileBytes){
     const insuredBDmm = form.getTextField('ins_dob_mm')
     const insuredBDdd = form.getTextField('ins_dob_dd')
     const insuredBDyy = form.getTextField('ins_dob_yy')
-    checkGender(createPDFAcroFields(form.getCheckBox('ins_sex').acroField.Kids()).map(_=>_[0]), '')
     
     // b. OTHER CLAIM ID (Designated by NUCC)
     // left field 
@@ -113,8 +109,7 @@ export async function fillFormUsingVariables(fileBytes){
     
     // c. INSURANCE PLAN NAME OR PROGRAM NAME
     const insurancePlanName_c = form.getTextField('ins_plan_name')
-    // d.IS THERE ANOTHER HEALTH BENEFIT PLAN?
-    checkYesOrNo(createPDFAcroFields(form.getCheckBox('ins_benefit_plan').acroField.Kids()).map(_=>_[0]), '')
+
     
     // 8. RESERVED FOR NUCC USE 
     const reserverdForNuccUse_8 = form.getTextField('NUCC USE')
@@ -137,7 +132,7 @@ export async function fillFormUsingVariables(fileBytes){
     const otherDateMM_15 = form.getTextField('sim_ill_mm')
     const otherDateDD_15 = form.getTextField('sim_ill_dd')
     const otherDateYY_15 = form.getTextField('sim_ill_yy')
-
+    
     // 16. DATES PATIENT UNABLE TO WORK IN CURRENT OCCUPATION
     // From
     const datesPatientUnableToWorkFromYY_16 = form.getTextField('work_yy_from')
@@ -147,7 +142,7 @@ export async function fillFormUsingVariables(fileBytes){
     const datesPatientUnableToWorkToYY_16 = form.getTextField('work_yy_end')
     const datesPatientUnableToWorkToDD_16 = form.getTextField('work_dd_end')
     const datesPatientUnableToWorkToMM_16 = form.getTextField('work_mm_end')
-
+    
     // 17.NAME OF REFERRING PROVIDER OR OTHER SOURCE
     // left field
     const nameOfReferringProvider_17_left = form.getTextField('85')
@@ -157,10 +152,10 @@ export async function fillFormUsingVariables(fileBytes){
     // 17a
     const num_17a1 = form.getTextField("physician number 17a1")
     const physicianNumber_17a = form.getTextField('physician number 17a')
-
+    
     // 17b
     const npi_17b = form.getTextField('id_physician')
-
+    
     // 18. HOSPITALIZATION DATES ReLATED TO CURRENT SERVICES
     // From
     const hospitalDatesFromYY_18 = form.getTextField('hosp_yy_from')
@@ -170,17 +165,15 @@ export async function fillFormUsingVariables(fileBytes){
     const hospitalDatesToYY_18 = form.getTextField('hosp_yy_end')
     const hospitalDatesToDD_18 = form.getTextField('hosp_dd_end')
     const hospitalDatesToMM_18 = form.getTextField('hosp_mm_end')
-
+    
     
     // 19. ADDITIONAL CLAIM INFORMATION (Designated by NUCC)
     const additionalClaimInformation_19 = form.getTextField('96')
-
-
-    // 20.OUTSIDELAB?
-    checkYesOrNo(createPDFAcroFields(form.getCheckBox('lab').acroField.Kids()).map(_=>_[0]), '')
+    
+    
     // $ CHARGES
     const charges_$20 = form.getTextField('charge')
-
+    
     // 21. DIAGNOSIS OR NATURE OF ILLNESS OR INJURY
     const diagnosesNatureA_21 = form.getTextField('diagnosis1')
     const diagnosesNatureB_21 = form.getTextField('diagnosis2')
@@ -196,16 +189,16 @@ export async function fillFormUsingVariables(fileBytes){
     const diagnosesNatureL_21 = form.getTextField('diagnosis12')
     // ICD_Ind
     const icd_ind =  form.getTextField('99icd')
-
+    
     // 22. RESUBMISSION CODE
     const resubmissionCode_22 = form.getTextField('medicaid_resub')
-
+    
     // ORGINAL REF NO
     const orginalRefNo = form.getTextField('original_ref')
 
     // 23. PRIOR AUTHORIZATION NUMBER
     const priorAuthorizationNumber = form.getTextField('prior_auth')
-
+    
     // 24. A. DATE(S) OF SERVICE
     // 1
     // FROM
@@ -250,7 +243,7 @@ export async function fillFormUsingVariables(fileBytes){
     const dateOfService4ToMM = form.getTextField('sv4_mm_end')
     const dateOfService4ToDD = form.getTextField('sv4_dd_end')
     const dateOfService4ToYY = form.getTextField('sv4_yy_end')
-
+    
     // 5
     // From
     const dateOfService5 = form.getTextField('Suppld')
@@ -272,7 +265,7 @@ export async function fillFormUsingVariables(fileBytes){
     const dateOfService6ToMM = form.getTextField('sv6_mm_end')
     const dateOfService6ToDD = form.getTextField('sv6_dd_end')
     const dateOfService6ToYY = form.getTextField('sv6_yy_end')
-
+    
     // B. PLACE OF SERVICE
     const placeOfService1 = form.getTextField('place1')
     const placeOfService2 = form.getTextField('place2')
@@ -280,7 +273,7 @@ export async function fillFormUsingVariables(fileBytes){
     const placeOfService4 = form.getTextField('place4')
     const placeOfService5 = form.getTextField('place5')
     const placeOfService6 = form.getTextField('place6')
-
+    
     // C. EMG
     const emg1 = form.getTextField('type1')
     const emg2 = form.getTextField('type2')
@@ -306,7 +299,7 @@ export async function fillFormUsingVariables(fileBytes){
     const modifier4 = form.getTextField('mod4')
     const modifier5 = form.getTextField('mod5')
     const modifier6 = form.getTextField('mod6')
-
+    
     // colum 2
     const modifier1a = form.getTextField('mod1a')
     const modifier2a = form.getTextField('mod2a')
@@ -330,7 +323,7 @@ export async function fillFormUsingVariables(fileBytes){
     const modifier4c = form.getTextField('mod4c')
     const modifier5c = form.getTextField('mod5c')
     const modifier6c = form.getTextField('mod6c')
-
+    
     // E. DIAGNOSIS POINTER
     const diagnosis1 = form.getTextField('diag1')
     const diagnosis2 = form.getTextField('diag2')
@@ -354,7 +347,7 @@ export async function fillFormUsingVariables(fileBytes){
     const dayOrUnits4 = form.getTextField('day4')
     const dayOrUnits5 = form.getTextField('day5')
     const dayOrUnits6 = form.getTextField('day6')
-
+    
     // H. EPSD T Familty Plan
     const epsdFamilyPlan1 = form.getTextField('epsdt1')
     const epsdFamilyPlan2 = form.getTextField('epsdt2')
@@ -370,7 +363,7 @@ export async function fillFormUsingVariables(fileBytes){
     const qualId4 = form.getTextField('emg4')
     const qualId5 = form.getTextField('emg5')
     const qualId6 = form.getTextField('emg6')
-
+    
     // J. RENDERING PROVIDER ID. #
     const renderingProvider1 = form.getTextField('local1a')
     const renderingProvider2 = form.getTextField('local1')
@@ -387,25 +380,22 @@ export async function fillFormUsingVariables(fileBytes){
     
     // 25. FEDERAL TAX I.D NUMBER
     const federalTax_25 = form.getTextField('tax_id')
-    checkSSNOrEIN(createPDFAcroFields(form.getCheckBox('ssn').acroField.Kids()).map(_=>_[0]), '')
-
+    
     // 26. PATIENT'S ACCOUNT NO
     const patientAccountNo = form.getTextField('pt_account')
     
-    // 27. ACCEPT ASSIGNMENT
-    checkYesOrNo(createPDFAcroFields(form.getCheckBox('assignment').acroField.Kids()).map(_=>_[0]),'')
     
     // 28.TOTAL CHARGE
     const checkBoxtotalCharge_28 = form.getCheckBox('276')
     const totalCharge_28 = form.getTextField('t_charge')
-
+    
     // 29. AMOUNT PAID
     const amountPaid_29 = form.getTextField('amt_paid')
-
+    
     // 31. SIGNATURE OF PHYSICIAN OR SUPPLIER
     const physicianSignature = form.getTextField('physician_signature')
     const physicianDate = form.getTextField('physician_date')
-
+    
     // 32. SERVICE FACILITY LOCATION INFORMATION
     const serviceFacilityLocationName = form.getTextField('fac_name')
     const serviceFacilityLocationStreet = form.getTextField('fac_street')
@@ -414,7 +404,7 @@ export async function fillFormUsingVariables(fileBytes){
     const serviceFacilityLocation_a = form.getTextField('pin1')
     // b
     const serviceFacilityLocation_b = form.getTextField('grp1')
-
+    
     // 33. BILLING PROVIDER INFO & PH#
     const billingProviderInfoName = form.getTextField('doc_name')
     const billingProviderInfoStreet = form.getTextField('doc_street')
@@ -425,42 +415,11 @@ export async function fillFormUsingVariables(fileBytes){
     const billingProviderInfo_a = form.getTextField('pin')
     // b
     const billingProviderInfo_b = form.getTextField('grp')
-
+    
     // Button
     const clearForm = form.getButton('Clear Form')
     
-    // insuranceName.setText('insurance_name')
-    // insuranceAddress.setText('insurance_address')
-    // insuranceAddress2.getText('insurance_address2')
-    // insuranceCityStateZip.setText('insurance_city_state_zip')
     
-    // patientName_2.setText('pt_name')
-    // patientAddress_5.setText('pt_street')
-    // patientCity.setText("pt_city")
-    // patientZipCode.setText('zipCode')
-    // otherInsuredName_9.setText('other_ins_name')
-    // otherInsuredPolicy_a.setText('other_ins_policy')
-    
-    // reserverdForNuccUse_b.setText('40')
-    // reserverdForNuccUse_c.setText('41')
-    // insurancePlanName_d.setText('other_ins_plan_name')
-    // signed.setText('pt_signature')
-    // date.setText('pt_date')
-
-    // patientBDyy_3.setText('2001')
-    // patientBDmm_3.setText('07')
-    // patientBDdd_3.setText('15')
-    
-    // reserverdForNuccUse_8.setText('NUCC USE')
-    // claimCodes_10d.setText('50')
-    // otherClaimId_b_left.setText('57')
-    // otherClaimId_b_right.setText('58')
-    // dateOfCurrentIllnessQual_14.setText('73')
-    // otherDateQual_15.setText('74')
-
-    // nameOfReferringProvider_17_left.setText('85')  
-    // additionalClaimInformation_19.setText("96")
-    // icd_ind.setText('99icd')
 
     form.flatten()
     return await urlforPDF(pdfDoc)
