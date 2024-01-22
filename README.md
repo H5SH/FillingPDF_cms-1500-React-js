@@ -54,6 +54,13 @@ Contains different functions for different checkboxes, such as
 takes in the field name from the defined dictionary and the check 
 value.
 
+## setDate
+takes in form, fieldname from the defined dictionary and date.
+
+## setFromAndToDate
+takes in form, fieldname from the dict, from date
+and To date
+
 ## pdfform.js
 pdfform is potentional solution which might pick up the fields
 but it is not available on node package instullar or npm 
