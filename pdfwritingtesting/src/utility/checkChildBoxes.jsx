@@ -1,4 +1,6 @@
-export default function checkCheckBox(fieldName, check){
+import { createPDFAcroFields } from "pdf-lib"
+
+export default function checkCheckBox(form, fieldName, check){
     if(check.length > 0 ){
         if(fieldName === 'insurance_type'){
             // 1. TopOptions

@@ -48,7 +48,11 @@ the fields checkboxes and the box number, first box as 1.
 
 ## CheckChildBoxes
 Contains different functions for different checkboxes, such as 
-1 function for yes or no and 1 for gender male and female 
+1 function for yes or no and 1 for gender male and female
+
+## checkCheckBox
+takes in the field name from the defined dictionary and the check 
+value.
 
 ## pdfform.js
 pdfform is potentional solution which might pick up the fields

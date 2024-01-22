@@ -1,6 +1,7 @@
 import { PDFDocument, createPDFAcroFields } from "pdf-lib"
 import { urlforPDF } from "./utility"
 import checkCheckBox from "./checkChildBoxes"
+import { setDate, setFromAndToDate } from "./setDates"
 
 export async function fillFormUsingVariables(fileBytes){
 
@@ -23,26 +24,40 @@ export async function fillFormUsingVariables(fileBytes){
         federalTaxIDNumber: 'ssn',
         acceptAssignment: 'assignment'
     }
+
+    // Dates FieldNames
+    const datesFields = {
+        patientBD: 'birth',
+        insuredBD: 'ins_dob',
+        dateOfCurrentIllness: 'cur_ill',
+        otherDate: 'sim_ill',
+        datesPatientUnableToWorkFromAndTo: 'work',
+        hospitalDatesFromAndTo: 'hosp',
+        dateOfServiceFromAndTo1: 'sv1',
+        dateOfServiceFromAndTo2: 'sv2',
+        dateOfServiceFromAndTo3: 'sv3',
+        dateOfServiceFromAndTo4: 'sv4',
+        dateOfServiceFromAndTo5: 'sv5',
+        dateOfServiceFromAndTo6: 'sv6'
+    }
     // VARIABLES TO FILL DATA
 
     // MAIN TITLES (NO TAGS)
     // First title field
-    const insuranceName = form.getTextField('insurance_name')
+    const heading1InsuranceName = form.getTextField('insurance_name')
     // Second field
-    const insuranceAddress = form.getTextField('insurance_address')
+    const heading2InsuranceAddress = form.getTextField('insurance_address')
     // Third field
-    const insuranceAddress2 = form.getTextField("insurance_address2")
+    const heading3InsuranceAddress2 = form.getTextField("insurance_address2")
     // Forth field
-    const insuranceCityStateZip = form.getTextField('insurance_city_state_zip')
+    const heading4InsuranceCityStateZip = form.getTextField('insurance_city_state_zip')
 
     
     // 2.PATIENT'S NAME 
     const patientName_2 = form.getTextField('pt_name')
     
     // 3. PATIENT'S BIRTH DATE
-    const patientBDyy_3 = form.getTextField('birth_yy')
-    const patientBDmm_3 = form.getTextField('birth_mm')
-    const patientBDdd_3 = form.getTextField('birth_dd')
+   setDate(form, datesFields.patientBD ,'12/12/2004')
     
     // 4. INSURED'S NAME
     const insuredName_4 = form.getTextField('ins_name')
@@ -52,12 +67,21 @@ export async function fillFormUsingVariables(fileBytes){
     
     // CITY
     const patientCity = form.getTextField("pt_city")
+
+    // STATE
+    const patientState = form.getTextField("pt_state")
     
     // ZIP CODE
     const patientZipCode = form.getTextField('pt_zip')
+    //Patient Telephone number
+    const patientTelephoneCountryCode = form.getTextField('pt_AreaCode')
+    const patientTelephoneNumber = form.getTextField('pt_phone')
     
     // 9. OTHER INSURED'S NAME
     const otherInsuredName_9 = form.getTextField('other_ins_name')
+
+    // 10. IS PATIENT'S CONDITION RELATED TO
+    const placeState_10 = form.getTextField("accident_place")
     
     // a. OTHER INSURED'S POLICY OR GROUP NUMBER
     const otherInsuredPolicy_a = form.getTextField('other_ins_policy')
@@ -72,17 +96,21 @@ export async function fillFormUsingVariables(fileBytes){
     // d. INSURANCE PLAN NAME OR PROGRAM NAME
     const insurancePlanName_d = form.getTextField('other_ins_plan_name')
     
+    // 12. PATIENT'S OR AUTHORIZED PERSON'S SIGNATURE
     // SIGNED
-    const signed = form.getTextField('pt_signature')
+    const patientSigned = form.getTextField('pt_signature')
     
     // DATE
-    const date = form.getTextField("pt_date")
+    const patientSigneDate = form.getTextField("pt_date")
+
+    // 13.INSURED OR AUTHRIED PERSON SIGNATURE
+    const insuredSigned = form.getTextField("ins_signature")
     
     
     // 1 a. INSURED'S I.D NUMBER
-    const insuredIdNUmber_1a = form.getTextField('insurance_id')
+    const insuredIdNumber_1a = form.getTextField('insurance_id')
     // 7. INSURED'S ADDRESS
-    const insuredAddress = form.getTextField('ins_street') 
+    const insuredAddress_7 = form.getTextField('ins_street') 
     // CITY under Insured tags
     const insuredCity = form.getTextField('ins_city')
     // ZIP CODE
@@ -93,13 +121,10 @@ export async function fillFormUsingVariables(fileBytes){
     const insuredTelephoneCountryCode = form.getTextField('ins_phone area')
     const insuredTelephoneNumber = form.getTextField('ins_phone')
     
-    
     // 11.INSURED'S POLICY GROUP OR FECA NUMBER
     const insuredPolicy_11 = form.getTextField('ins_policy')
     // a. INSURED'S DATE OF BIRTH
-    const insuredBDmm = form.getTextField('ins_dob_mm')
-    const insuredBDdd = form.getTextField('ins_dob_dd')
-    const insuredBDyy = form.getTextField('ins_dob_yy')
+    setDate(form, datesFields.insuredBD, '12-12-2004')
     
     // b. OTHER CLAIM ID (Designated by NUCC)
     // left field 
@@ -121,27 +146,18 @@ export async function fillFormUsingVariables(fileBytes){
     // right most
     const dateOfCurrentIllnessQual_14 = form.getTextField('73')
     // DATES
-    const dateOfCurrentIllnessMM_14 = form.getTextField('cur_ill_mm')
-    const dateOfCurrentIllnessDD_14 = form.getTextField('cur_ill_dd')
-    const dateOfCurrentIllnessYY_14 = form.getTextField('cur_ill_yy')
+    setDate(form, datesFields.dateOfCurrentIllness, '12-12-2004')
+    
     
     // 15. OTHER DATE
     // QUAL
     const otherDateQual_15 = form.getTextField('74')
     // DaATES
-    const otherDateMM_15 = form.getTextField('sim_ill_mm')
-    const otherDateDD_15 = form.getTextField('sim_ill_dd')
-    const otherDateYY_15 = form.getTextField('sim_ill_yy')
+    setDate(form, datesFields.otherDate, "12/12/2004")
     
     // 16. DATES PATIENT UNABLE TO WORK IN CURRENT OCCUPATION
     // From
-    const datesPatientUnableToWorkFromYY_16 = form.getTextField('work_yy_from')
-    const datesPatientUnableToWorkFromDD_16 = form.getTextField('work_dd_from')
-    const datesPatientUnableToWorkFromMM_16 = form.getTextField('work_mm_from')
-    // To
-    const datesPatientUnableToWorkToYY_16 = form.getTextField('work_yy_end')
-    const datesPatientUnableToWorkToDD_16 = form.getTextField('work_dd_end')
-    const datesPatientUnableToWorkToMM_16 = form.getTextField('work_mm_end')
+    setFromAndToDate(form, datesFields.datesPatientUnableToWorkFromAndTo, "12/12/2004", "12-12-2004")
     
     // 17.NAME OF REFERRING PROVIDER OR OTHER SOURCE
     // left field
@@ -150,22 +166,15 @@ export async function fillFormUsingVariables(fileBytes){
     const nameOfReferringProvider_17_right = form.getTextField('ref_physician')
     
     // 17a
-    const num_17a1 = form.getTextField("physician number 17a1")
-    const physicianNumber_17a = form.getTextField('physician number 17a')
+    const a_17_left = form.getTextField("physician number 17a1")
+    const a_17_right = form.getTextField('physician number 17a')
     
     // 17b
     const npi_17b = form.getTextField('id_physician')
     
     // 18. HOSPITALIZATION DATES ReLATED TO CURRENT SERVICES
     // From
-    const hospitalDatesFromYY_18 = form.getTextField('hosp_yy_from')
-    const hospitalDatesFromDD_18 = form.getTextField('hosp_dd_from')
-    const hospitalDatesFromMM_18 = form.getTextField('hosp_mm_from')
-    // To
-    const hospitalDatesToYY_18 = form.getTextField('hosp_yy_end')
-    const hospitalDatesToDD_18 = form.getTextField('hosp_dd_end')
-    const hospitalDatesToMM_18 = form.getTextField('hosp_mm_end')
-    
+    setFromAndToDate(form, datesFields.hospitalDatesFromAndTo, '12/12/2004', '12-12-2004')
     
     // 19. ADDITIONAL CLAIM INFORMATION (Designated by NUCC)
     const additionalClaimInformation_19 = form.getTextField('96')
@@ -202,69 +211,30 @@ export async function fillFormUsingVariables(fileBytes){
     // 24. A. DATE(S) OF SERVICE
     // 1
     // FROM
+    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo1, "12-12-2004", "12/12/2004")
     const dateOfService1 = form.getTextField('Suppl')
-    const dateOfService1FromMM = form.getTextField('sv1_mm_from')
-    const dateOfService1FromDD = form.getTextField('sv1_dd_from')
-    const dateOfService1FromYY = form.getTextField('sv1_yy_from')
-    // To
-    const dateOfService1ToMM = form.getTextField('sv1_mm_end')
-    const dateOfService1ToDD = form.getTextField('sv1_dd_end')
-    const dateOfService1ToYY = form.getTextField('sv1_yy_end')
-
+   
     // 2
     // From
     const dateOfService2 = form.getTextField('Suppla')
-    const dateOfService2FromMM = form.getTextField('sv2_mm_from')
-    const dateOfService2FromDD = form.getTextField('sv2_dd_from')
-    const dateOfService2FromYY = form.getTextField('sv2_yy_from')
-    // To
-    const dateOfService2ToMM = form.getTextField('sv2_mm_end')
-    const dateOfService2ToDD = form.getTextField('sv2_dd_end')
-    const dateOfService2ToYY = form.getTextField('sv2_yy_end')
+    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo2, '12-12-2004', '12/12/2004')
 
     // 3
     // From
     const dateOfService3 = form.getTextField('Supplb')
-    const dateOfService3FromMM = form.getTextField('sv3_mm_from')
-    const dateOfService3FromDD = form.getTextField('sv3_dd_from')
-    const dateOfService3FromYY = form.getTextField('sv3_yy_from')
-    // To
-    const dateOfService3ToMM = form.getTextField('sv3_mm_end')
-    const dateOfService3ToDD = form.getTextField('sv3_dd_end')
-    const dateOfService3ToYY = form.getTextField('sv3_yy_end')
-
+    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo3, '12-12-2004', '12/12/2004')
     // 4
     // From
     const dateOfService4 = form.getTextField('Supplc')
-    const dateOfService4FromMM = form.getTextField('sv4_mm_from')
-    const dateOfService4FromDD = form.getTextField('sv4_dd_from')
-    const dateOfService4FromYY = form.getTextField('sv4_yy_from')
-    // To
-    const dateOfService4ToMM = form.getTextField('sv4_mm_end')
-    const dateOfService4ToDD = form.getTextField('sv4_dd_end')
-    const dateOfService4ToYY = form.getTextField('sv4_yy_end')
-    
+    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo4, '12-12-2004', '12/12/2004')
     // 5
     // From
     const dateOfService5 = form.getTextField('Suppld')
-    const dateOfService5FromMM = form.getTextField('sv5_mm_from')
-    const dateOfService5FromDD = form.getTextField('sv5_dd_from')
-    const dateOfService5FromYY = form.getTextField('sv5_yy_from')
-    // To
-    const dateOfService5ToMM = form.getTextField('sv5_mm_end')
-    const dateOfService5ToDD = form.getTextField('sv5_dd_end')
-    const dateOfService5ToYY = form.getTextField('sv5_yy_end')
-
+    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo5, '12-12-2004', '12/12/2004')
     // 6
     // From
     const dateOfService6 = form.getTextField('Supple')
-    const dateOfService6FromMM = form.getTextField('sv6_mm_from')
-    const dateOfService6FromDD = form.getTextField('sv6_dd_from')
-    const dateOfService6FromYY = form.getTextField('sv6_yy_from')
-    // To
-    const dateOfService6ToMM = form.getTextField('sv6_mm_end')
-    const dateOfService6ToDD = form.getTextField('sv6_dd_end')
-    const dateOfService6ToYY = form.getTextField('sv6_yy_end')
+    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo6, '12-12-2004', '12/12/2004')
     
     // B. PLACE OF SERVICE
     const placeOfService1 = form.getTextField('place1')
@@ -350,11 +320,17 @@ export async function fillFormUsingVariables(fileBytes){
     
     // H. EPSD T Familty Plan
     const epsdFamilyPlan1 = form.getTextField('epsdt1')
-    const epsdFamilyPlan2 = form.getTextField('epsdt2')
-    const epsdFamilyPlan3 = form.getTextField('epsdt3')
-    const epsdFamilyPlan4 = form.getTextField('epsdt4')
-    const epsdFamilyPlan5 = form.getTextField('epsdt5')
-    const epsdFamilyPlan6 = form.getTextField('epsdt6')
+    const epsdFamilyPlan2 = form.getTextField('plan1')
+    const epsdFamilyPlan3 = form.getTextField('epsdt2')
+    const epsdFamilyPlan4 = form.getTextField('plan2')
+    const epsdFamilyPlan5 = form.getTextField('epsdt3')
+    const epsdFamilyPlan6 = form.getTextField('plan3')
+    const epsdFamilyPlan7 = form.getTextField('epsdt4')
+    const epsdFamilyPlan8 = form.getTextField('plan4')
+    const epsdFamilyPlan9 = form.getTextField('epsdt5')
+    const epsdFamilyPlan10 = form.getTextField('plan5')
+    const epsdFamilyPlan11 = form.getTextField('epsdt6')
+    const epsdFamilyPlan12 = form.getTextField('plan6')
 
     // I. ID QUAL
     const qualId1 = form.getTextField('emg1')
@@ -382,7 +358,7 @@ export async function fillFormUsingVariables(fileBytes){
     const federalTax_25 = form.getTextField('tax_id')
     
     // 26. PATIENT'S ACCOUNT NO
-    const patientAccountNo = form.getTextField('pt_account')
+    const patientAccountNo_26 = form.getTextField('pt_account')
     
     
     // 28.TOTAL CHARGE
@@ -418,8 +394,196 @@ export async function fillFormUsingVariables(fileBytes){
     
     // Button
     const clearForm = form.getButton('Clear Form')
+
+    heading1InsuranceName.setText("Heading 1 of insurance")
+    heading2InsuranceAddress.setText("heading 2 of insurance")
+    heading3InsuranceAddress2.setText("heading 3 of insurance")
+    heading4InsuranceCityStateZip.setText("Lahore, Pakistan, 52770")
+
+    checkCheckBox(form, checkboxFields.insurance_type, 'group health plan')
+    patientName_2.setText("Hasham Asad")
+    patientAddress_5.setText("Wapda Town PHase 1")
+    patientCity.setText("Sialkot")
+    patientState.setText("Pak")
+    patientZipCode.setText("57720")
+    patientTelephoneCountryCode.setText("+92")
+    patientTelephoneNumber.setText("333444489")
+    checkCheckBox(form, checkboxFields.patientsGender, 'm')
+    insuredIdNumber_1a.setText("70120545")
+    insuredName_4.setText("Ali Ahmed")
+    insuredAddress_7.setText("SomeWhere in lahore")
+    checkCheckBox(form, checkboxFields.patientsRelationshipToInsured, 'other')
+    insuredCity.setText("Lahore")
+    insuredState.setText("Pak")
+    insuredZipCode.setText("57720")
+    reserverdForNuccUse_8.setText('RESERVED FOR NUCK USE 1')
+    insuredTelephoneCountryCode.setText("+92")
+    insuredTelephoneNumber.setText("033334329")
+    otherInsuredName_9.setText("No other isurance")
+    otherInsuredPolicy_a.setText("No other policy")
+    reserverdForNuccUse_b.setText("reserved for nucc use 2")
+    reserverdForNuccUse_c.setText('reserved for nucc use 3')
+    insurancePlanName_d.setText("First time filling with variables")
+    checkCheckBox(form, checkboxFields.employement, 'y')
+    checkCheckBox(form, checkboxFields.autoAccident, 'n')
+    checkCheckBox(form, checkboxFields.otherAccident, 'y')
+    placeState_10.setText("PAK")
+    claimCodes_10d.setText("002,003,004")
+    otherClaimId_b_left.setText("23")
+    otherClaimId_b_right.setText("no other claim ID so far")
+    checkCheckBox(form, checkboxFields.insuredGender, 'm')
+    insurancePlanName_c.setText("no plan or program name")
+    checkCheckBox(form, checkboxFields.anotherHealthBenefit, 'n')
+    patientSigneDate.setText("23-01-2024")
+    dateOfCurrentIllnessQual_14.setText("QUAL 1")
+    otherDateQual_15.setText("QUAL 2")
+    nameOfReferringProvider_17_left.setText("01")
+    nameOfReferringProvider_17_right.setText("Muaz Asim")
+    a_17_left.setText("00")
+    a_17_right.setText("Physician Bilaal")
+    npi_17b.setText("I don't know what to right")
     
+    additionalClaimInformation_19.setText("No Additional Claims")
+    checkCheckBox(form, checkboxFields.outsideLab, 'y')
+    charges_$20.setText("20.0")
+    diagnosesNatureA_21.setText("diagnoseA")
+    diagnosesNatureB_21.setText("diagnoseB")
+    diagnosesNatureC_21.setText("diagnoseC")
+    diagnosesNatureD_21.setText("diagnoseD")
+    diagnosesNatureE_21.setText("diagnoseE")
+    diagnosesNatureF_21.setText("diagnoseF")
+    diagnosesNatureG_21.setText("diagnoseG")
+    diagnosesNatureH_21.setText("diagnoseH")
+    diagnosesNatureI_21.setText("diagnoseI")
+    diagnosesNatureJ_21.setText("diagnoseJ")
+    diagnosesNatureK_21.setText("diagnoseK")
+    diagnosesNatureL_21.setText("diagnoseL")
+    resubmissionCode_22.setText("00200")
+    orginalRefNo.setText("44444")
+    priorAuthorizationNumber.setText("00900")
+
+    dateOfService1.setText("intership")
+    placeOfService1.setText("uol")
+    emg1.setText("emg??")
+    cpt1.setText("cpt??")
+    modifier1.setText("modifiers??")
+    modifier1a.setText("modifierA")
+    modifier1b.setText("modifierB")
+    modifier1c.setText("modifierC")
+    diagnosis1.setText("pt pointer")
+    charges1.setText("2000")
+    dayOrUnits1.setText("60")
+    epsdFamilyPlan1.setText("NON1")
+    epsdFamilyPlan2.setText("NON2")
+    qualId1.setText("Q1")
+    renderingProvider1.setText('rendering provider 1')
+    renderingProvider2.setText("rendering provider 2")
+
+    dateOfService2.setText("intership")
+    placeOfService2.setText("uol")
+    emg2.setText("emg??")
+    cpt2.setText("cpt??")
+    modifier2.setText("modifiers??")
+    modifier2a.setText("modifierA")
+    modifier2b.setText("modifierB")
+    modifier2c.setText("modifierC")
+    diagnosis2.setText("pt pointer")
+    charges2.setText("2000")
+    dayOrUnits2.setText("60")
+    epsdFamilyPlan3.setText("NON1")
+    epsdFamilyPlan4.setText("NON2")
+    qualId2.setText("Q1")
+    renderingProvider3.setText('rendering provider 1')
+    renderingProvider4.setText("rendering provider 2")
+
+    dateOfService3.setText("intership")
+    placeOfService3.setText("uol")
+    emg3.setText("emg??")
+    cpt3.setText("cpt??")
+    modifier3.setText("modifiers??")
+    modifier3a.setText("modifierA")
+    modifier3b.setText("modifierB")
+    modifier3c.setText("modifierC")
+    diagnosis3.setText("pt pointer")
+    charges3.setText("2000")
+    dayOrUnits3.setText("60")
+    epsdFamilyPlan5.setText("NON1")
+    epsdFamilyPlan6.setText("NON2")
+    qualId3.setText("Q1")
+    renderingProvider5.setText('rendering provider 1')
+    renderingProvider6.setText("rendering provider 2")
+
+    dateOfService4.setText("intership")
+    placeOfService4.setText("uol")
+    emg4.setText("emg??")
+    cpt4.setText("cpt??")
+    modifier4.setText("modifiers??")
+    modifier4a.setText("modifierA")
+    modifier4b.setText("modifierB")
+    modifier4c.setText("modifierC")
+    diagnosis4.setText("pt pointer")
+    charges4.setText("2000")
+    dayOrUnits4.setText("60")
+    epsdFamilyPlan7.setText("NON1")
+    epsdFamilyPlan8.setText("NON2")
+    qualId4.setText("Q1")
+    renderingProvider7.setText('rendering provider 1')
+    renderingProvider8.setText("rendering provider 2")
+
+    dateOfService5.setText("intership")
+    placeOfService5.setText("uol")
+    emg5.setText("emg??")
+    cpt5.setText("cpt??")
+    modifier5.setText("modifiers??")
+    modifier5a.setText("modifierA")
+    modifier5b.setText("modifierB")
+    modifier5c.setText("modifierC")
+    diagnosis5.setText("pt pointer")
+    charges5.setText("2000")
+    dayOrUnits5.setText("60")
+    epsdFamilyPlan9.setText("NON1")
+    epsdFamilyPlan10.setText("NON2")
+    qualId5.setText("Q1")
+    renderingProvider9.setText('rendering provider 1')
+    renderingProvider10.setText("rendering provider 2")
+
+    dateOfService6.setText("intership")
+    placeOfService6.setText("uol")
+    emg6.setText("emg??")
+    cpt6.setText("cpt??")
+    modifier6.setText("modifiers??")
+    modifier6a.setText("modifierA")
+    modifier6b.setText("modifierB")
+    modifier6c.setText("modifierC")
+    diagnosis6.setText("pt pointer")
+    charges6.setText("2000")
+    dayOrUnits6.setText("60")
+    epsdFamilyPlan11.setText("NON1")
+    epsdFamilyPlan12.setText("NON2")
+    qualId6.setText("Q1")
+    renderingProvider11.setText('rendering provider 1')
+    renderingProvider12.setText("rendering provider 2")
     
+    federalTax_25.setText("#221133")
+    checkCheckBox(form, checkboxFields.federalTaxIDNumber, 'ein')
+    patientAccountNo_26.setText("003357678930")
+    checkCheckBox(form, checkboxFields.acceptAssignment, 'y')
+
+    totalCharge_28.setText("2300")
+    checkBoxtotalCharge_28.check()
+
+    amountPaid_29.setText("2300")
+    physicianDate.setText("12-02-2024")
+    serviceFacilityLocationLocation.setText("SomeWhere in Pakistan")
+    billingProviderInfoNumber.setText("333444489")
+    billingProviderInfoNumberCode.setText("+92")
+    serviceFacilityLocation_a.setText("in Lahore")
+    serviceFacilityLocation_b.setText("022333789")
+    billingProviderInfo_a.setText("almost done")
+    billingProviderInfo_b.setText('DONE')
+
+    icd_ind.setText('02')
+
 
     form.flatten()
     return await urlforPDF(pdfDoc)

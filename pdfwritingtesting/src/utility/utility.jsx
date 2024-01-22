@@ -11,7 +11,6 @@ export async function fillFieldWithThereName(fileBytes, buttons, findAndPrintOnC
     // checkChildBox(kids, 4)
 
     form.getFields().find(x=>{
-        // to fields with specific names
         if(x.getName().includes(findAndPrintOnConsole)){
           console.log(x.getName())
         }
