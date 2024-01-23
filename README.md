@@ -73,6 +73,9 @@ fills the fields that are given
 ## setInsuranceHeaders
 Takes 4 insurance Headers NAME, Address, Address2, city/State/zip
 
+## setNuccUse
+sets and 3 nucc use fields
+
 ## pdfform.js
 pdfform is potentional solution which might pick up the fields
 but it is not available on node package instullar or npm 
