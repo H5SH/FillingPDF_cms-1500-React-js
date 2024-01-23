@@ -10,6 +10,7 @@ import {
 } from "./physicianOrSupplierInfo"
 import { setInsuredData, setPatientData } from "./setPatientAndInsuredData"
 import setInsuranceHeaders from "./setInsuranceHeaders"
+import setNuccUse from "./setNuccUse"
 
 export async function fillFormUsingVariables(fileBytes){
 
@@ -35,8 +36,6 @@ export async function fillFormUsingVariables(fileBytes){
 
     // Dates FieldNames
     const datesFields = {
-        patientBD: 'birth',
-        insuredBD: 'ins_dob',
         dateOfCurrentIllness: 'cur_ill',
         otherDate: 'sim_ill',
         datesPatientUnableToWorkFromAndTo: 'work',
@@ -53,91 +52,22 @@ export async function fillFormUsingVariables(fileBytes){
     // MAIN TITLES (NO TAGS)
     setInsuranceHeaders(form, "MainTitle", "Lahore Wapda Town", "SomeWhere In Sialkot", "Lahore Pakistan 57720")
 
-    // 2.PATIENT'S NAME 
-    const patientName_2 = form.getTextField('pt_name')
-    
-    // 3. PATIENT'S BIRTH DATE
-   setDate(form, datesFields.patientBD ,'12/12/2004')
-    
-    // 4. INSURED'S NAME
-    const insuredName_4 = form.getTextField('ins_name')
-    
-    // 5. PATIENT'S ADDRESS
-    const patientAddress_5 = form.getTextField('pt_street')
-    
-    // CITY
-    const patientCity = form.getTextField("pt_city")
+    // PATIENT'S DATA 
+    setPatientData(form, "Hasham", "12", 'Lahore', 'PAK', 57720, +92, 333444489, '', '12/12/2004',23444444, "No Plan", "12-12-2004" )
 
-    // STATE
-    const patientState = form.getTextField("pt_state")
-    
-    // ZIP CODE
-    const patientZipCode = form.getTextField('pt_zip')
-    //Patient Telephone number
-    const patientTelephoneCountryCode = form.getTextField('pt_AreaCode')
-    const patientTelephoneNumber = form.getTextField('pt_phone')
-    
-    // 9. OTHER INSURED'S NAME
-    const otherInsuredName_9 = form.getTextField('other_ins_name')
+    // INSURED DATA
+    setInsuredData(form, 'Ali', "no Other Policy", '', 'Non', 122, 'Wapda', 'Lahore', 54470, 'Pakistan', +92, 333444489, 'Policy','PlanNameC', 'PlanNameD', '12/12/2004' )
 
+    // NUCC USE
+    setNuccUse(form, 'nuccUseB', 'nuccUseC', 'nuccUse_8')
     // 10. IS PATIENT'S CONDITION RELATED TO
     const placeState_10 = form.getTextField("accident_place")
-    
-    // a. OTHER INSURED'S POLICY OR GROUP NUMBER
-    const otherInsuredPolicy_a = form.getTextField('other_ins_policy')
-    
-    
-    // b. RESERVED FOR NUCC USE
-    const reserverdForNuccUse_b = form.getTextField('40')
-    
-    // c. RESERVED FOR NUCC USE
-    const reserverdForNuccUse_c = form.getTextField('41')
-    
-    // d. INSURANCE PLAN NAME OR PROGRAM NAME
-    const insurancePlanName_d = form.getTextField('other_ins_plan_name')
-    
-    // 12. PATIENT'S OR AUTHORIZED PERSON'S SIGNATURE
-    // SIGNED
-    const patientSigned = form.getTextField('pt_signature')
-    
-    // DATE
-    const patientSigneDate = form.getTextField("pt_date")
-
-    // 13.INSURED OR AUTHRIED PERSON SIGNATURE
-    const insuredSigned = form.getTextField("ins_signature")
-    
-    
-    // 1 a. INSURED'S I.D NUMBER
-    const insuredIdNumber_1a = form.getTextField('insurance_id')
-    // 7. INSURED'S ADDRESS
-    const insuredAddress_7 = form.getTextField('ins_street') 
-    // CITY under Insured tags
-    const insuredCity = form.getTextField('ins_city')
-    // ZIP CODE
-    const insuredZipCode = form.getTextField('ins_zip')
-    // STATE
-    const insuredState = form.getTextField('ins_state')
-    // TELEPHONE (Include Area Code)
-    const insuredTelephoneCountryCode = form.getTextField('ins_phone area')
-    const insuredTelephoneNumber = form.getTextField('ins_phone')
-    
-    // 11.INSURED'S POLICY GROUP OR FECA NUMBER
-    const insuredPolicy_11 = form.getTextField('ins_policy')
-    // a. INSURED'S DATE OF BIRTH
-    setDate(form, datesFields.insuredBD, '12-12-2004')
     
     // b. OTHER CLAIM ID (Designated by NUCC)
     // left field 
     const otherClaimId_b_left = form.getTextField('57')
     // right field  
     const otherClaimId_b_right = form.getTextField('58')
-    
-    // c. INSURANCE PLAN NAME OR PROGRAM NAME
-    const insurancePlanName_c = form.getTextField('ins_plan_name')
-
-    
-    // 8. RESERVED FOR NUCC USE 
-    const reserverdForNuccUse_8 = form.getTextField('NUCC USE')
     
     // 10d. CLAIM CODES (Designated by NUCC)
     const claimCodes_10d = form.getTextField('50')
@@ -147,7 +77,6 @@ export async function fillFormUsingVariables(fileBytes){
     const dateOfCurrentIllnessQual_14 = form.getTextField('73')
     // DATES
     setDate(form, datesFields.dateOfCurrentIllness, '12-12-2004')
-    
     
     // 15. OTHER DATE
     // QUAL
@@ -234,29 +163,8 @@ export async function fillFormUsingVariables(fileBytes){
     const clearForm = form.getButton('Clear Form')
 
     checkCheckBox(form, checkboxFields.insurance_type, 'group health plan')
-    patientName_2.setText("Hasham Asad")
-    patientAddress_5.setText("Wapda Town PHase 1")
-    patientCity.setText("Sialkot")
-    patientState.setText("Pak")
-    patientZipCode.setText("57720")
-    patientTelephoneCountryCode.setText("+92")
-    patientTelephoneNumber.setText("333444489")
     checkCheckBox(form, checkboxFields.patientsGender, 'm')
-    insuredIdNumber_1a.setText("70120545")
-    insuredName_4.setText("Ali Ahmed")
-    insuredAddress_7.setText("SomeWhere in lahore")
     checkCheckBox(form, checkboxFields.patientsRelationshipToInsured, 'other')
-    insuredCity.setText("Lahore")
-    insuredState.setText("Pak")
-    insuredZipCode.setText("57720")
-    reserverdForNuccUse_8.setText('RESERVED FOR NUCK USE 1')
-    insuredTelephoneCountryCode.setText("+92")
-    insuredTelephoneNumber.setText("033334329")
-    otherInsuredName_9.setText("No other isurance")
-    otherInsuredPolicy_a.setText("No other policy")
-    reserverdForNuccUse_b.setText("reserved for nucc use 2")
-    reserverdForNuccUse_c.setText('reserved for nucc use 3')
-    insurancePlanName_d.setText("First time filling with variables")
     checkCheckBox(form, checkboxFields.employement, 'y')
     checkCheckBox(form, checkboxFields.autoAccident, 'n')
     checkCheckBox(form, checkboxFields.otherAccident, 'y')
@@ -265,9 +173,7 @@ export async function fillFormUsingVariables(fileBytes){
     otherClaimId_b_left.setText("23")
     otherClaimId_b_right.setText("no other claim ID so far")
     checkCheckBox(form, checkboxFields.insuredGender, 'm')
-    insurancePlanName_c.setText("no plan or program name")
     checkCheckBox(form, checkboxFields.anotherHealthBenefit, 'n')
-    patientSigneDate.setText("23-01-2024")
     dateOfCurrentIllnessQual_14.setText("QUAL 1")
     otherDateQual_15.setText("QUAL 2")
     nameOfReferringProvider_17_left.setText("01")

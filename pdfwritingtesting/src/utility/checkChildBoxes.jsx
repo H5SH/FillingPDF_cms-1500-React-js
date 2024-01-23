@@ -25,13 +25,7 @@ export default function checkCheckBox(form, fieldName, check){
             // d.IS THERE ANOTHER HEALTH BENEFIT PLAN?
             checkYesOrNo(createPDFAcroFields(form.getCheckBox(fieldName).acroField.Kids()).map(_=>_[0]), check)
         }
-        // checkGender(createPDFAcroFields(form.getCheckBox('ins_sex').acroField.Kids()).map(_=>_[0]), '')
-        // checkYesOrNo(createPDFAcroFields(form.getCheckBox('pt_auto_accident').acroField.Kids()).map(_=>_[0]), '')
-        // checkYesOrNo(createPDFAcroFields(form.getCheckBox('other_accident').acroField.Kids()).map(_=>_[0]), '')
         
-        // checkYesOrNo(createPDFAcroFields(form.getCheckBox('ins_benefit_plan').acroField.Kids()).map(_=>_[0]), '')
-        // checkYesOrNo(createPDFAcroFields(form.getCheckBox('lab').acroField.Kids()).map(_=>_[0]), '')
-        // checkYesOrNo(createPDFAcroFields(form.getCheckBox('assignment').acroField.Kids()).map(_=>_[0]),'')
     }
 
 
