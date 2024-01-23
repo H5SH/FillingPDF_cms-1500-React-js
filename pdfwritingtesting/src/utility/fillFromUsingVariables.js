@@ -2,6 +2,7 @@ import { PDFDocument, createPDFAcroFields } from "pdf-lib"
 import { urlforPDF } from "./utility"
 import checkCheckBox from "./checkChildBoxes"
 import { setDate, setFromAndToDate } from "./setDates"
+import { setDiagnosisNature, setSupplierInfo } from "./physicianOrSupplierInfo"
 
 export async function fillFormUsingVariables(fileBytes){
 
@@ -184,20 +185,8 @@ export async function fillFormUsingVariables(fileBytes){
     const charges_$20 = form.getTextField('charge')
     
     // 21. DIAGNOSIS OR NATURE OF ILLNESS OR INJURY
-    const diagnosesNatureA_21 = form.getTextField('diagnosis1')
-    const diagnosesNatureB_21 = form.getTextField('diagnosis2')
-    const diagnosesNatureC_21 = form.getTextField('diagnosis3')
-    const diagnosesNatureD_21 = form.getTextField('diagnosis4')
-    const diagnosesNatureE_21 = form.getTextField('diagnosis5')
-    const diagnosesNatureF_21 = form.getTextField('diagnosis6')
-    const diagnosesNatureG_21 = form.getTextField('diagnosis7')
-    const diagnosesNatureH_21 = form.getTextField('diagnosis8')
-    const diagnosesNatureI_21 = form.getTextField('diagnosis9')
-    const diagnosesNatureJ_21 = form.getTextField('diagnosis10')
-    const diagnosesNatureK_21 = form.getTextField('diagnosis11')
-    const diagnosesNatureL_21 = form.getTextField('diagnosis12')
-    // ICD_Ind
-    const icd_ind =  form.getTextField('99icd')
+    setDiagnosisNature(form, [ "diagnosis" , "diagnosis", "diagnosis", "diagnosis"
+,"diagnosis","diagnosis","diagnosis","diagnosis","diagnosis","diagnosis","diagnosis","diagnosis"], '22')
     
     // 22. RESUBMISSION CODE
     const resubmissionCode_22 = form.getTextField('medicaid_resub')
@@ -209,10 +198,7 @@ export async function fillFormUsingVariables(fileBytes){
     const priorAuthorizationNumber = form.getTextField('prior_auth')
     
     // 24. A. DATE(S) OF SERVICE
-    // 1
-    // FROM
-    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo1, "12-12-2004", "12/12/2004")
-    const dateOfService1 = form.getTextField('Suppl')
+    setSupplierInfo(form, "Supplier1", "12-12-2004", "12/12/2004", "UOL", "EMG", 'CPT', ['modifier1', 'modifier2', 'modifier3', 'modifier4'], "diagnosisPointer", "20.0", "days", 'epsdt', 'plan', '120', ['renderingProvider1', 'renderingProvider2'], 1 )
    
     // 2
     // From
@@ -237,7 +223,7 @@ export async function fillFormUsingVariables(fileBytes){
     setFromAndToDate(form, datesFields.dateOfServiceFromAndTo6, '12-12-2004', '12/12/2004')
     
     // B. PLACE OF SERVICE
-    const placeOfService1 = form.getTextField('place1')
+    // const placeOfService1 = form.getTextField('place1')
     const placeOfService2 = form.getTextField('place2')
     const placeOfService3 = form.getTextField('place3')
     const placeOfService4 = form.getTextField('place4')
@@ -245,7 +231,7 @@ export async function fillFormUsingVariables(fileBytes){
     const placeOfService6 = form.getTextField('place6')
     
     // C. EMG
-    const emg1 = form.getTextField('type1')
+    // const emg1 = form.getTextField('type1')
     const emg2 = form.getTextField('type2')
     const emg3 = form.getTextField('type3')
     const emg4 = form.getTextField('type4')
@@ -254,7 +240,7 @@ export async function fillFormUsingVariables(fileBytes){
     
     // D. PROCEDURES, SERVICES, OR SUPPLIES
     // CPT/HCPCS
-    const cpt1 = form.getTextField('cpt1')
+    // const cpt1 = form.getTextField('cpt1')
     const cpt2 = form.getTextField('cpt2')
     const cpt3 = form.getTextField('cpt3')
     const cpt4 = form.getTextField('cpt4')
@@ -263,7 +249,7 @@ export async function fillFormUsingVariables(fileBytes){
 
     // MODIFIER
     // colum 1
-    const modifier1 = form.getTextField('mod1')
+    // const modifier1 = form.getTextField('mod1')
     const modifier2 = form.getTextField('mod2')
     const modifier3 = form.getTextField('mod3')
     const modifier4 = form.getTextField('mod4')
@@ -271,7 +257,7 @@ export async function fillFormUsingVariables(fileBytes){
     const modifier6 = form.getTextField('mod6')
     
     // colum 2
-    const modifier1a = form.getTextField('mod1a')
+    // const modifier1a = form.getTextField('mod1a')
     const modifier2a = form.getTextField('mod2a')
     const modifier3a = form.getTextField('mod3a')
     const modifier4a = form.getTextField('mod4a')
@@ -279,7 +265,7 @@ export async function fillFormUsingVariables(fileBytes){
     const modifier6a = form.getTextField('mod6a')
 
     // colum 3
-    const modifier1b = form.getTextField('mod1b')
+    // const modifier1b = form.getTextField('mod1b')
     const modifier2b = form.getTextField('mod2b')
     const modifier3b = form.getTextField('mod3b')
     const modifier4b = form.getTextField('mod4b')
@@ -287,7 +273,7 @@ export async function fillFormUsingVariables(fileBytes){
     const modifier6b = form.getTextField('mod6b')
 
     // colum 4
-    const modifier1c = form.getTextField('mod1c')
+    // const modifier1c = form.getTextField('mod1c')
     const modifier2c = form.getTextField('mod2c')
     const modifier3c = form.getTextField('mod3c')
     const modifier4c = form.getTextField('mod4c')
@@ -295,7 +281,7 @@ export async function fillFormUsingVariables(fileBytes){
     const modifier6c = form.getTextField('mod6c')
     
     // E. DIAGNOSIS POINTER
-    const diagnosis1 = form.getTextField('diag1')
+    // const diagnosis1 = form.getTextField('diag1')
     const diagnosis2 = form.getTextField('diag2')
     const diagnosis3 = form.getTextField('diag3')
     const diagnosis4 = form.getTextField('diag4')
@@ -303,7 +289,7 @@ export async function fillFormUsingVariables(fileBytes){
     const diagnosis6 = form.getTextField('diag6')
 
     // F. $CHARGES
-    const charges1 = form.getTextField('ch1')
+    // const charges1 = form.getTextField('ch1')
     const charges2 = form.getTextField('ch2')
     const charges3 = form.getTextField('ch3')
     const charges4 = form.getTextField('ch4')
@@ -311,7 +297,7 @@ export async function fillFormUsingVariables(fileBytes){
     const charges6 = form.getTextField('ch6')
 
     // G. DAYS OR UNITS
-    const dayOrUnits1 = form.getTextField('day1')
+    // const dayOrUnits1 = form.getTextField('day1')
     const dayOrUnits2 = form.getTextField('day2')
     const dayOrUnits3 = form.getTextField('day3')
     const dayOrUnits4 = form.getTextField('day4')
@@ -319,8 +305,8 @@ export async function fillFormUsingVariables(fileBytes){
     const dayOrUnits6 = form.getTextField('day6')
     
     // H. EPSD T Familty Plan
-    const epsdFamilyPlan1 = form.getTextField('epsdt1')
-    const epsdFamilyPlan2 = form.getTextField('plan1')
+    // const epsdFamilyPlan1 = form.getTextField('epsdt1')
+    // const epsdFamilyPlan2 = form.getTextField('plan1')
     const epsdFamilyPlan3 = form.getTextField('epsdt2')
     const epsdFamilyPlan4 = form.getTextField('plan2')
     const epsdFamilyPlan5 = form.getTextField('epsdt3')
@@ -333,7 +319,7 @@ export async function fillFormUsingVariables(fileBytes){
     const epsdFamilyPlan12 = form.getTextField('plan6')
 
     // I. ID QUAL
-    const qualId1 = form.getTextField('emg1')
+    // const qualId1 = form.getTextField('emg1')
     const qualId2 = form.getTextField('emg2')
     const qualId3 = form.getTextField('emg3')
     const qualId4 = form.getTextField('emg4')
@@ -341,8 +327,8 @@ export async function fillFormUsingVariables(fileBytes){
     const qualId6 = form.getTextField('emg6')
     
     // J. RENDERING PROVIDER ID. #
-    const renderingProvider1 = form.getTextField('local1a')
-    const renderingProvider2 = form.getTextField('local1')
+    // const renderingProvider1 = form.getTextField('local1a')
+    // const renderingProvider2 = form.getTextField('local1')
     const renderingProvider3 = form.getTextField('local2a')
     const renderingProvider4 = form.getTextField('local2')
     const renderingProvider5 = form.getTextField('local3a')
@@ -446,38 +432,9 @@ export async function fillFormUsingVariables(fileBytes){
     additionalClaimInformation_19.setText("No Additional Claims")
     checkCheckBox(form, checkboxFields.outsideLab, 'y')
     charges_$20.setText("20.0")
-    diagnosesNatureA_21.setText("diagnoseA")
-    diagnosesNatureB_21.setText("diagnoseB")
-    diagnosesNatureC_21.setText("diagnoseC")
-    diagnosesNatureD_21.setText("diagnoseD")
-    diagnosesNatureE_21.setText("diagnoseE")
-    diagnosesNatureF_21.setText("diagnoseF")
-    diagnosesNatureG_21.setText("diagnoseG")
-    diagnosesNatureH_21.setText("diagnoseH")
-    diagnosesNatureI_21.setText("diagnoseI")
-    diagnosesNatureJ_21.setText("diagnoseJ")
-    diagnosesNatureK_21.setText("diagnoseK")
-    diagnosesNatureL_21.setText("diagnoseL")
     resubmissionCode_22.setText("00200")
     orginalRefNo.setText("44444")
     priorAuthorizationNumber.setText("00900")
-
-    dateOfService1.setText("intership")
-    placeOfService1.setText("uol")
-    emg1.setText("emg??")
-    cpt1.setText("cpt??")
-    modifier1.setText("modifiers??")
-    modifier1a.setText("modifierA")
-    modifier1b.setText("modifierB")
-    modifier1c.setText("modifierC")
-    diagnosis1.setText("pt pointer")
-    charges1.setText("2000")
-    dayOrUnits1.setText("60")
-    epsdFamilyPlan1.setText("NON1")
-    epsdFamilyPlan2.setText("NON2")
-    qualId1.setText("Q1")
-    renderingProvider1.setText('rendering provider 1')
-    renderingProvider2.setText("rendering provider 2")
 
     dateOfService2.setText("intership")
     placeOfService2.setText("uol")
@@ -581,8 +538,6 @@ export async function fillFormUsingVariables(fileBytes){
     serviceFacilityLocation_b.setText("022333789")
     billingProviderInfo_a.setText("almost done")
     billingProviderInfo_b.setText('DONE')
-
-    icd_ind.setText('02')
 
 
     form.flatten()

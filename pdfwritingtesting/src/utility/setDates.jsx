@@ -20,8 +20,8 @@ export function setFromAndToDate(form, fieldName, fromDate, ToDate){
         form.getTextField(`${fieldName}_mm_end`).setText(toMonth)
 
         if(form.getTextField(`${fieldName}_yy_from`).getMaxLength() < 4){
-            form.getTextField(`${fieldName}_yy_from`).setText(fromYear.slice(0,2))
-            form.getTextField(`${fieldName}_yy_end`).setText(toYear.slice(0, 2))
+            form.getTextField(`${fieldName}_yy_from`).setText(fromYear.slice(2, 4))
+            form.getTextField(`${fieldName}_yy_end`).setText(toYear.slice(2, 4))
         }else{
             form.getTextField(`${fieldName}_yy_end`).setText(toYear)
             form.getTextField(`${fieldName}_yy_end`).setText(fromYear)
