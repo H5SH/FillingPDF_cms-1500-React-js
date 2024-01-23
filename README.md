@@ -61,6 +61,18 @@ takes in form, fieldname from the defined dictionary and date.
 takes in form, fieldname from the dict, from date
 and To date
 
+## setPatientAndInsuredData
+
+### setPatientData
+Takes the data for patient (upper left side of the form) and fills the fields that are given
+
+### setInsuredData
+Takes the data for insured (upper right side of the form) and 
+fills the fields that are given
+
+## setInsuranceHeaders
+Takes 4 insurance Headers NAME, Address, Address2, city/State/zip
+
 ## pdfform.js
 pdfform is potentional solution which might pick up the fields
 but it is not available on node package instullar or npm 

@@ -2,7 +2,14 @@ import { PDFDocument, createPDFAcroFields } from "pdf-lib"
 import { urlforPDF } from "./utility"
 import checkCheckBox from "./checkChildBoxes"
 import { setDate, setFromAndToDate } from "./setDates"
-import { setDiagnosisNature, setSupplierInfo } from "./physicianOrSupplierInfo"
+import { 
+    setDiagnosisNature, 
+    setSupplierInfo, 
+    setServiceFacilityLocation, 
+    setBillingProviderInfo 
+} from "./physicianOrSupplierInfo"
+import { setInsuredData, setPatientData } from "./setPatientAndInsuredData"
+import setInsuranceHeaders from "./setInsuranceHeaders"
 
 export async function fillFormUsingVariables(fileBytes){
 
@@ -44,16 +51,8 @@ export async function fillFormUsingVariables(fileBytes){
     // VARIABLES TO FILL DATA
 
     // MAIN TITLES (NO TAGS)
-    // First title field
-    const heading1InsuranceName = form.getTextField('insurance_name')
-    // Second field
-    const heading2InsuranceAddress = form.getTextField('insurance_address')
-    // Third field
-    const heading3InsuranceAddress2 = form.getTextField("insurance_address2")
-    // Forth field
-    const heading4InsuranceCityStateZip = form.getTextField('insurance_city_state_zip')
+    setInsuranceHeaders(form, "MainTitle", "Lahore Wapda Town", "SomeWhere In Sialkot", "Lahore Pakistan 57720")
 
-    
     // 2.PATIENT'S NAME 
     const patientName_2 = form.getTextField('pt_name')
     
@@ -198,148 +197,15 @@ export async function fillFormUsingVariables(fileBytes){
     const priorAuthorizationNumber = form.getTextField('prior_auth')
     
     // 24. A. DATE(S) OF SERVICE
+    // 1
     setSupplierInfo(form, "Supplier1", "12-12-2004", "12/12/2004", "UOL", "EMG", 'CPT', ['modifier1', 'modifier2', 'modifier3', 'modifier4'], "diagnosisPointer", "20.0", "days", 'epsdt', 'plan', '120', ['renderingProvider1', 'renderingProvider2'], 1 )
-   
     // 2
-    // From
-    const dateOfService2 = form.getTextField('Suppla')
-    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo2, '12-12-2004', '12/12/2004')
-
+    setSupplierInfo(form, "2ndSupplier", "12-12-2004", '12/12/2004', 'CS', '' ,'cpt', ['modifier1', 'modifier2'], 'diagnosis', '2.00', 'units', '', 'PLAN', '12', ['rendering'], 2 )
     // 3
-    // From
-    const dateOfService3 = form.getTextField('Supplb')
-    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo3, '12-12-2004', '12/12/2004')
-    // 4
-    // From
-    const dateOfService4 = form.getTextField('Supplc')
-    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo4, '12-12-2004', '12/12/2004')
-    // 5
-    // From
-    const dateOfService5 = form.getTextField('Suppld')
-    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo5, '12-12-2004', '12/12/2004')
-    // 6
-    // From
-    const dateOfService6 = form.getTextField('Supple')
-    setFromAndToDate(form, datesFields.dateOfServiceFromAndTo6, '12-12-2004', '12/12/2004')
-    
-    // B. PLACE OF SERVICE
-    // const placeOfService1 = form.getTextField('place1')
-    const placeOfService2 = form.getTextField('place2')
-    const placeOfService3 = form.getTextField('place3')
-    const placeOfService4 = form.getTextField('place4')
-    const placeOfService5 = form.getTextField('place5')
-    const placeOfService6 = form.getTextField('place6')
-    
-    // C. EMG
-    // const emg1 = form.getTextField('type1')
-    const emg2 = form.getTextField('type2')
-    const emg3 = form.getTextField('type3')
-    const emg4 = form.getTextField('type4')
-    const emg5 = form.getTextField('type5')
-    const emg6 = form.getTextField('type6')
-    
-    // D. PROCEDURES, SERVICES, OR SUPPLIES
-    // CPT/HCPCS
-    // const cpt1 = form.getTextField('cpt1')
-    const cpt2 = form.getTextField('cpt2')
-    const cpt3 = form.getTextField('cpt3')
-    const cpt4 = form.getTextField('cpt4')
-    const cpt5 = form.getTextField('cpt5')
-    const cpt6 = form.getTextField('cpt6')
+    setSupplierInfo(form, '3rdSupplier', '12/12/2004', '12-12-2004', '', '', '', [], '', '2000', 'units', '', '', '12', [], 3)
+    // 4 
+    setSupplierInfo(form, '4thSupplier', '12/12/2004', '12-12-2004', '', 'emg', 'cpt', ['modifier'], 'ptPointer', '20.0', '', 'epsdt', 'plan', 12, ['rendering'], 4)
 
-    // MODIFIER
-    // colum 1
-    // const modifier1 = form.getTextField('mod1')
-    const modifier2 = form.getTextField('mod2')
-    const modifier3 = form.getTextField('mod3')
-    const modifier4 = form.getTextField('mod4')
-    const modifier5 = form.getTextField('mod5')
-    const modifier6 = form.getTextField('mod6')
-    
-    // colum 2
-    // const modifier1a = form.getTextField('mod1a')
-    const modifier2a = form.getTextField('mod2a')
-    const modifier3a = form.getTextField('mod3a')
-    const modifier4a = form.getTextField('mod4a')
-    const modifier5a = form.getTextField('mod5a')
-    const modifier6a = form.getTextField('mod6a')
-
-    // colum 3
-    // const modifier1b = form.getTextField('mod1b')
-    const modifier2b = form.getTextField('mod2b')
-    const modifier3b = form.getTextField('mod3b')
-    const modifier4b = form.getTextField('mod4b')
-    const modifier5b = form.getTextField('mod5b')
-    const modifier6b = form.getTextField('mod6b')
-
-    // colum 4
-    // const modifier1c = form.getTextField('mod1c')
-    const modifier2c = form.getTextField('mod2c')
-    const modifier3c = form.getTextField('mod3c')
-    const modifier4c = form.getTextField('mod4c')
-    const modifier5c = form.getTextField('mod5c')
-    const modifier6c = form.getTextField('mod6c')
-    
-    // E. DIAGNOSIS POINTER
-    // const diagnosis1 = form.getTextField('diag1')
-    const diagnosis2 = form.getTextField('diag2')
-    const diagnosis3 = form.getTextField('diag3')
-    const diagnosis4 = form.getTextField('diag4')
-    const diagnosis5 = form.getTextField('diag5')
-    const diagnosis6 = form.getTextField('diag6')
-
-    // F. $CHARGES
-    // const charges1 = form.getTextField('ch1')
-    const charges2 = form.getTextField('ch2')
-    const charges3 = form.getTextField('ch3')
-    const charges4 = form.getTextField('ch4')
-    const charges5 = form.getTextField('ch5')
-    const charges6 = form.getTextField('ch6')
-
-    // G. DAYS OR UNITS
-    // const dayOrUnits1 = form.getTextField('day1')
-    const dayOrUnits2 = form.getTextField('day2')
-    const dayOrUnits3 = form.getTextField('day3')
-    const dayOrUnits4 = form.getTextField('day4')
-    const dayOrUnits5 = form.getTextField('day5')
-    const dayOrUnits6 = form.getTextField('day6')
-    
-    // H. EPSD T Familty Plan
-    // const epsdFamilyPlan1 = form.getTextField('epsdt1')
-    // const epsdFamilyPlan2 = form.getTextField('plan1')
-    const epsdFamilyPlan3 = form.getTextField('epsdt2')
-    const epsdFamilyPlan4 = form.getTextField('plan2')
-    const epsdFamilyPlan5 = form.getTextField('epsdt3')
-    const epsdFamilyPlan6 = form.getTextField('plan3')
-    const epsdFamilyPlan7 = form.getTextField('epsdt4')
-    const epsdFamilyPlan8 = form.getTextField('plan4')
-    const epsdFamilyPlan9 = form.getTextField('epsdt5')
-    const epsdFamilyPlan10 = form.getTextField('plan5')
-    const epsdFamilyPlan11 = form.getTextField('epsdt6')
-    const epsdFamilyPlan12 = form.getTextField('plan6')
-
-    // I. ID QUAL
-    // const qualId1 = form.getTextField('emg1')
-    const qualId2 = form.getTextField('emg2')
-    const qualId3 = form.getTextField('emg3')
-    const qualId4 = form.getTextField('emg4')
-    const qualId5 = form.getTextField('emg5')
-    const qualId6 = form.getTextField('emg6')
-    
-    // J. RENDERING PROVIDER ID. #
-    // const renderingProvider1 = form.getTextField('local1a')
-    // const renderingProvider2 = form.getTextField('local1')
-    const renderingProvider3 = form.getTextField('local2a')
-    const renderingProvider4 = form.getTextField('local2')
-    const renderingProvider5 = form.getTextField('local3a')
-    const renderingProvider6 = form.getTextField('local3')
-    const renderingProvider7 = form.getTextField('local4a')
-    const renderingProvider8 = form.getTextField('local4')
-    const renderingProvider9 = form.getTextField('local5a')
-    const renderingProvider10 = form.getTextField('local5')
-    const renderingProvider11 = form.getTextField('local6a')
-    const renderingProvider12 = form.getTextField('local6')
-    
     // 25. FEDERAL TAX I.D NUMBER
     const federalTax_25 = form.getTextField('tax_id')
     
@@ -359,32 +225,13 @@ export async function fillFormUsingVariables(fileBytes){
     const physicianDate = form.getTextField('physician_date')
     
     // 32. SERVICE FACILITY LOCATION INFORMATION
-    const serviceFacilityLocationName = form.getTextField('fac_name')
-    const serviceFacilityLocationStreet = form.getTextField('fac_street')
-    const serviceFacilityLocationLocation = form.getTextField('fac_location')
-    // a
-    const serviceFacilityLocation_a = form.getTextField('pin1')
-    // b
-    const serviceFacilityLocation_b = form.getTextField('grp1')
+    setServiceFacilityLocation(form, "Hasham Asad", '13', 'Wapda Town Phase 1', "a", 'b' )
     
     // 33. BILLING PROVIDER INFO & PH#
-    const billingProviderInfoName = form.getTextField('doc_name')
-    const billingProviderInfoStreet = form.getTextField('doc_street')
-    const billingProviderInfoLocation = form.getTextField('doc_location')
-    const billingProviderInfoNumberCode = form.getTextField('doc_phone area')
-    const billingProviderInfoNumber = form.getTextField('doc_phone')
-    // a
-    const billingProviderInfo_a = form.getTextField('pin')
-    // b
-    const billingProviderInfo_b = form.getTextField('grp')
+    setBillingProviderInfo(form, 'ALI', '13', "SomeWhere In Lahore", "+92", '333444489', 'a', 'b')
     
     // Button
     const clearForm = form.getButton('Clear Form')
-
-    heading1InsuranceName.setText("Heading 1 of insurance")
-    heading2InsuranceAddress.setText("heading 2 of insurance")
-    heading3InsuranceAddress2.setText("heading 3 of insurance")
-    heading4InsuranceCityStateZip.setText("Lahore, Pakistan, 52770")
 
     checkCheckBox(form, checkboxFields.insurance_type, 'group health plan')
     patientName_2.setText("Hasham Asad")
@@ -435,91 +282,6 @@ export async function fillFormUsingVariables(fileBytes){
     resubmissionCode_22.setText("00200")
     orginalRefNo.setText("44444")
     priorAuthorizationNumber.setText("00900")
-
-    dateOfService2.setText("intership")
-    placeOfService2.setText("uol")
-    emg2.setText("emg??")
-    cpt2.setText("cpt??")
-    modifier2.setText("modifiers??")
-    modifier2a.setText("modifierA")
-    modifier2b.setText("modifierB")
-    modifier2c.setText("modifierC")
-    diagnosis2.setText("pt pointer")
-    charges2.setText("2000")
-    dayOrUnits2.setText("60")
-    epsdFamilyPlan3.setText("NON1")
-    epsdFamilyPlan4.setText("NON2")
-    qualId2.setText("Q1")
-    renderingProvider3.setText('rendering provider 1')
-    renderingProvider4.setText("rendering provider 2")
-
-    dateOfService3.setText("intership")
-    placeOfService3.setText("uol")
-    emg3.setText("emg??")
-    cpt3.setText("cpt??")
-    modifier3.setText("modifiers??")
-    modifier3a.setText("modifierA")
-    modifier3b.setText("modifierB")
-    modifier3c.setText("modifierC")
-    diagnosis3.setText("pt pointer")
-    charges3.setText("2000")
-    dayOrUnits3.setText("60")
-    epsdFamilyPlan5.setText("NON1")
-    epsdFamilyPlan6.setText("NON2")
-    qualId3.setText("Q1")
-    renderingProvider5.setText('rendering provider 1')
-    renderingProvider6.setText("rendering provider 2")
-
-    dateOfService4.setText("intership")
-    placeOfService4.setText("uol")
-    emg4.setText("emg??")
-    cpt4.setText("cpt??")
-    modifier4.setText("modifiers??")
-    modifier4a.setText("modifierA")
-    modifier4b.setText("modifierB")
-    modifier4c.setText("modifierC")
-    diagnosis4.setText("pt pointer")
-    charges4.setText("2000")
-    dayOrUnits4.setText("60")
-    epsdFamilyPlan7.setText("NON1")
-    epsdFamilyPlan8.setText("NON2")
-    qualId4.setText("Q1")
-    renderingProvider7.setText('rendering provider 1')
-    renderingProvider8.setText("rendering provider 2")
-
-    dateOfService5.setText("intership")
-    placeOfService5.setText("uol")
-    emg5.setText("emg??")
-    cpt5.setText("cpt??")
-    modifier5.setText("modifiers??")
-    modifier5a.setText("modifierA")
-    modifier5b.setText("modifierB")
-    modifier5c.setText("modifierC")
-    diagnosis5.setText("pt pointer")
-    charges5.setText("2000")
-    dayOrUnits5.setText("60")
-    epsdFamilyPlan9.setText("NON1")
-    epsdFamilyPlan10.setText("NON2")
-    qualId5.setText("Q1")
-    renderingProvider9.setText('rendering provider 1')
-    renderingProvider10.setText("rendering provider 2")
-
-    dateOfService6.setText("intership")
-    placeOfService6.setText("uol")
-    emg6.setText("emg??")
-    cpt6.setText("cpt??")
-    modifier6.setText("modifiers??")
-    modifier6a.setText("modifierA")
-    modifier6b.setText("modifierB")
-    modifier6c.setText("modifierC")
-    diagnosis6.setText("pt pointer")
-    charges6.setText("2000")
-    dayOrUnits6.setText("60")
-    epsdFamilyPlan11.setText("NON1")
-    epsdFamilyPlan12.setText("NON2")
-    qualId6.setText("Q1")
-    renderingProvider11.setText('rendering provider 1')
-    renderingProvider12.setText("rendering provider 2")
     
     federalTax_25.setText("#221133")
     checkCheckBox(form, checkboxFields.federalTaxIDNumber, 'ein')
@@ -531,14 +293,6 @@ export async function fillFormUsingVariables(fileBytes){
 
     amountPaid_29.setText("2300")
     physicianDate.setText("12-02-2024")
-    serviceFacilityLocationLocation.setText("SomeWhere in Pakistan")
-    billingProviderInfoNumber.setText("333444489")
-    billingProviderInfoNumberCode.setText("+92")
-    serviceFacilityLocation_a.setText("in Lahore")
-    serviceFacilityLocation_b.setText("022333789")
-    billingProviderInfo_a.setText("almost done")
-    billingProviderInfo_b.setText('DONE')
-
 
     form.flatten()
     return await urlforPDF(pdfDoc)
