@@ -1,13 +1,11 @@
 import {Document, Page, pdfjs} from 'react-pdf'
 import { useEffect, useState } from 'react';
-import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib'
-import { getPdfFormCigna } from './__request/getPdf';
-import { saveAs } from 'file-saver'
+import { getPdfFormCigna, getPdfFromLocal } from './__request/getPdf';
+// import { saveAs } from 'file-saver'
 import { StyleSheet } from '@react-pdf/renderer'
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
 import { fillFieldWithThereName } from './utility/utility';
 import { fillFormUsingVariables } from './utility/fillFromUsingVariables';
+import PdfFile from './form-cms1500.pdf'
 
 
 // To display the pdf on Browser
@@ -28,7 +26,9 @@ function App() {
   const [response, setResponse] = useState('')
 
   async function WriteOnPdf(){
-    const PdfBytes = await getPdfFormCigna()
+    // const file = new Blob([PdfFile], {type: 'application/pdf'})
+    const PdfBytes = await getPdfFromLocal()
+    // console.log(PdfBytes)
     // var PdfBytes = new File([""], "form-cms1500.pdf")
     // console.log(PdfBytes)
 
@@ -62,8 +62,8 @@ function App() {
     const buttons = ["Clear Form"]
 
     // TWO FUNCTION CALLS
-    // setPdf(await fillFieldWithThereName(PdfBytes, buttons, ''))
-    setPdf(await fillFormUsingVariables(PdfBytes))
+    setPdf(await fillFieldWithThereName(PdfBytes, buttons, 'emplo'))
+    // setPdf(await fillFormUsingVariables(PdfBytes))
 
 
     // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica) 
@@ -110,14 +110,16 @@ function App() {
     <div style={{textAlign: 'center', marginTop: "1%"}}>
     <object data={pdf}
      type="application/pdf"
-     style={{width: '60%', height: '750px'}}></object>
+     style={{width: '60%', height: '750px'}}>
+     </object>
       {/* <Document file={pdf} style={styles.section}>
+        {console.log(PdfFile)}
       <a href={pdf} download={'Filled-cms-1500.pdf'} target='C:/H5SH/Work/FillingPDF_cms-1500-React-js'>DownLoad</a>
         <Page size={'A4'} pageNumber={1} style={styles.page}/>
       </Document> */}
       
       </div>
-}
+ }
       
        {/* <PDFViewer>
         <MyDocument />

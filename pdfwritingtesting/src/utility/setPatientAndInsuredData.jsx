@@ -1,38 +1,34 @@
 import { setDate } from "./setDates"
+import checkCheckBox from "./checkChildBoxes"
 
 
-export function setPatientData(form, name, street, city, state, zipCode, areaCode, phoneNo, signature, signedDate, accountNo, planName, birthDate){
+export function setPatientData(form, name, street, city, state, zipCode, areaCode, phoneNo, signature, signedDate, accountNo, birthDate, gender){
     if(name.length > 0){
-        form.getTextField('pt_name').setText(name)
-        street !== undefined && form.getTextField('pt_street').setText(`${street}`)
-        city !== undefined && form.getTextField('pt_city').setText(city)
-        state !== undefined && form.getTextField('pt_state').setText(state.slice(0, 3))
-        zipCode !== undefined && form.getTextField('pt_zip').setText(`${zipCode}`)
-        areaCode !== undefined && form.getTextField('pt_AreaCode').setText(`${areaCode}`)
-        phoneNo !== undefined && form.getTextField('pt_phone').setText(`${phoneNo}`)
-        signature !== undefined && form.getTextField('pt_signature').setText(signature)
-        signedDate !== undefined && form.getTextField('pt_date').setText(signedDate)
-        accountNo !== undefined && form.getTextField('pt_account').setText(`${accountNo}`)
+        const arrayOfData = [name, street, city, state.slice(0, 3), zipCode, areaCode, phoneNo, signature, signedDate, accountNo]
+        const arrayOfFields = ['pt_name', 'pt_street', 'pt_city', 'pt_state', 'pt_zip', 'pt_AreaCode', 'pt_phone', 'pt_signature', 'pt_date', 'pt_account']
+        arrayOfFields.map((field, index)=>{
+            arrayOfData[index] && form.getTextField(field).setText(arrayOfData[index])
+        })
         birthDate && setDate(form, 'birth', '12/12/2004')
+        gender && checkCheckBox(form, 'sex', gender)
     }
 }
 
-export function setInsuredData(form, name, otherPolicy, signed, otherName, idNumber, address, city, zipCode, state, areaCode, phoneNo, policy, planName_c, planName_d, dateOfBirth){
+export function setInsuredData(form, name, otherPolicy, signed, otherName, idNumber, address, city, zipCode, state, areaCode, phoneNo, policy, dateOfBirth, gender){
     if(name.length > 0){
-        form.getTextField('ins_name').setText(name)
-        otherName && form.getTextField('other_ins_name').setText(otherName)
-        otherPolicy && form.getTextField('other_ins_policy').setText(otherPolicy)
-        signed && form.getTextField('ins_signature').setText(signed)
-        idNumber && form.getTextField('insurance_id').setText(`${idNumber}`)
-        address && form.getTextField('ins_street').setText(address)
-        city && form.getTextField('ins_city').setText(city)
-        zipCode && form.getTextField('ins_zip').setText(`${zipCode}`)
-        state && form.getTextField('ins_state').setText(state.slice(0, 3))
-        areaCode && form.getTextField('ins_phone area').setText(`${areaCode}`)
-        phoneNo && form.getTextField('ins_phone').setText(`${phoneNo}`)
-        policy && form.getTextField('ins_policy').setText(policy)
-        planName_d && form.getTextField('ins_plan_name').setText(planName_d)
-        planName_c && form.getTextField('other_ins_plan_name').setText(planName_c)
+        const arrayOfData = [name, otherPolicy, signed, otherName, idNumber, address, city, zipCode, state.slice(0, 3), areaCode, phoneNo, policy]
+        const arrayOfFields = ['ins_name', 'other_ins_policy', 'ins_signature', 'other_ins_name', 'insurance_id', 'ins_street', 'ins_city', 'ins_zip', 'ins_state', 'ins_phone area', 'ins_phone', 'ins_policy']
+        arrayOfData.map((data, index)=>{
+            data && form.getTextField(arrayOfFields[index]).setText(data)
+        })
         dateOfBirth && setDate(form, 'ins_dob', "12/12/2004")
+        gender && checkCheckBox(form, 'ins_sex', gender)
     }  
+}
+
+export function setIsPatientConditionRelated(form, employment, autoAccident, otherAccident, placeState){
+    otherAccident && checkCheckBox(form, 'other_accident', otherAccident)
+    autoAccident && checkCheckBox(form, 'pt_auto_accident', autoAccident)
+    employment && checkCheckBox(form, 'employment', employment)
+    placeState && form.getTextField('accident_place').setText(placeState.slice(0, 3))
 }

@@ -34,13 +34,10 @@ export default function checkCheckBox(form, fieldName, check){
 function checkInsuranceType(boxes, check){
 
     if(check.length > 0){
-        boxes[0].setPartialName('medicare')
-        boxes[1].setPartialName('medicaid')
-        boxes[2].setPartialName('tricare')
-        boxes[3].setPartialName('champva')
-        boxes[4].setPartialName('grouphealthplan')
-        boxes[5].setPartialName('fecablklung')
-        boxes[6].setPartialName('other')
+        const fields = ['medicare', 'medicaid', 'tricare', 'champva', 'grouphealthplan', 'fecablklung', 'other']
+        boxes.map((box, index)=>{
+            box.setPartialName(fields[index])
+        })
 
         boxes.find((box) => {
             // works even if user have added spaces

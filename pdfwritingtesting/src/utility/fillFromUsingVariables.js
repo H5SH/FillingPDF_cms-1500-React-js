@@ -59,7 +59,7 @@ export async function fillFormUsingVariables(fileBytes){
     setInsuredData(form, 'Ali', "no Other Policy", '', 'Non', 122, 'Wapda', 'Lahore', 54470, 'Pakistan', +92, 333444489, 'Policy','PlanNameC', 'PlanNameD', '12/12/2004' )
 
     // NUCC USE
-    setNuccUse(form, 'nuccUseB', 'nuccUseC', 'nuccUse_8')
+    setNuccUse(form,'nuccUseB', 'nuccUseC', 'nuccUse_8')
     // 10. IS PATIENT'S CONDITION RELATED TO
     const placeState_10 = form.getTextField("accident_place")
     
